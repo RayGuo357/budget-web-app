@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { BudgetList, Items } from '../helper/BudgetList'
 import Button from './Button'
 
-type Props = {key: number}
+type Props = { key: number, listName: string }
 
-type State = { key: number, list: BudgetList, id: number}
+type State = { key: number, list: BudgetList, id: number }
 
 export default class List extends Component<Props, State> {
     state: State = {
         key: this.props.key,
-        list: new BudgetList("test", false),
+        list: new BudgetList(this.props.listName, false),
         id: 0
     }
 
@@ -31,7 +31,15 @@ export default class List extends Component<Props, State> {
 
     render() {
         return (
-            <div>{JSON.stringify(this.state.list)}
+            <div className="List">
+                <ul>
+                    {this.state.list.getName()}
+                    {
+                        this.state.list.getItems().map((comp) => {
+                            return <li>ID: {comp.id} ---- Money: {comp.money} ---- Note: {comp.note}</li>
+                        })
+                    }
+                </ul>
                 <Button name={'new item'} onClick={() => {
                     this.generateNewItem()
                 }} />
