@@ -4,7 +4,7 @@ type Props = {}
 
 const Chart = (props: Props) => {
   return (
-    <div>Chart</div>
+    <div className="Chart">Chart</div>
   )
 }
 

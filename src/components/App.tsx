@@ -1,15 +1,14 @@
 import React from 'react';
-import logo from '../icons/logo.svg';
 import '../css/App.css';
 import Button from './Button';
 import ListsContainer from './ListsContainer';
-import Chart from './Chart';
+import ChartContainer from './ChartContainer';
 
 function App() {
   return (
     <div className="App">
       <ListsContainer />
-      <Chart />
+      <ChartContainer />
     </div>
   );
 }
