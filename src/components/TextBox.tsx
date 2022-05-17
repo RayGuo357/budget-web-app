@@ -10,8 +10,6 @@ const TextBox = (props: Props) => {
             <input
                 id={props.id}
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
             />
         </div>
     )

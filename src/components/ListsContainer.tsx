@@ -17,14 +17,14 @@ export default class ListsContainer extends Component<Props, State> {
     generateNewList(): void {
         let newList: React.ReactElement[] = this.state.list;
         
-        let name: any = document.getElementById("list_name")?.getAttribute('value')
+        let name: string = (document.getElementById("list_name") as HTMLInputElement).value;
 
-        newList.push(<List key={this.state.next_id} listName={name}/>)
+        newList.push(<List key={this.state.next_id} listName={name}/>);
         this.setState({
             list: newList,
             next_id: this.state.next_id + 1
-        })
-        console.log(this.state.list)
+        });
+        (document.getElementById("list_name") as HTMLInputElement).value = "";
         return;
     }
 
