@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
-type Props = { id: string }
+type Props = { id: string, placeholder: string }
 
 const TextBox = (props: Props) => {
     const [name, setName] = useState("")
@@ -10,6 +10,7 @@ const TextBox = (props: Props) => {
             <input
                 id={props.id}
                 type="text"
+                placeholder={props.placeholder}
             />
         </div>
     )

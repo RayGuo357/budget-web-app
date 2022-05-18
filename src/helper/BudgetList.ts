@@ -9,7 +9,7 @@ export interface IBudgetList {
     setName(name: string): void;
 
     addItem(item: Items): boolean;
-    removeItem(item: Items): boolean;
+    removeItem(id: number): boolean;
 }
 
 export class BudgetList implements IBudgetList {
@@ -49,11 +49,11 @@ export class BudgetList implements IBudgetList {
         return this.items.length > current;
     };
 
-    removeItem(item: Items): boolean {
+    removeItem(id: number): boolean {
         let current: number = this.items.length;
         let newItems: Items[] = [];
         this.items.forEach((e) => {
-            if (e.id !== item.id) newItems.push(e)
+            if (e.id !== id) newItems.push(e)
         });
         this.items = newItems;
         return this.items.length < current;

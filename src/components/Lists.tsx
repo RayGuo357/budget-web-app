@@ -32,10 +32,6 @@ export default class List extends Component<Props, State> {
         }
     }
 
-    deleteNewItem(item: Items): void {
-        this.state.list.removeItem(item);
-    }
-
     render() {
         return (
             <div className="BudgetList">
@@ -48,7 +44,7 @@ export default class List extends Component<Props, State> {
                     </div>
                     {
                         this.state.list.getItems().map((comp) => {
-                            return  <div className="BudgetListCol">
+                            return  <div key={comp.id} className="BudgetListCol">
                                         <div className='ID'>{comp.id}</div>
                                         <div className='Money'>{comp.money}</div>
                                         <div className='Note'>{comp.note}</div>
@@ -60,14 +56,14 @@ export default class List extends Component<Props, State> {
                     this.generateNewItem()
                 }} />
                 <Button name={'delete'} onClick={() => {
-                    this.deleteNewItem({id: parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value), money: 0, note: ""})
+                    this.state.list.removeItem(parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value))
                     this.setState({
                         listID: this.state.listID,
                         list: this.state.list,
                         id: this.state.id
                     })
                 }} />
-                <TextBox id={`id_delete_${this.state.listID}`}/>
+                <TextBox id={`id_delete_${this.state.listID}`} placeholder='Enter item ID to delete:'/>
             </div>
         )
     }
