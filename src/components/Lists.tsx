@@ -46,7 +46,7 @@ export default class List extends Component<Props, State> {
         return (
             <div className="BudgetList">
                 <Popup id={`popup${this.state.listID}`} style={{display: 'none'}}>
-                    Popup for: {this.state.listID}
+                    Popup for: {this.props.listName}
                     <Button name={'new item'} onClick={() => {
                         this.generateNewItem()
                     }} />
