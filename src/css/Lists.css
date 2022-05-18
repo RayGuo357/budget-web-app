@@ -1,0 +1,33 @@
+.ListContainer {
+    width: 50%;
+    height: 100%;
+    border-style: solid;
+}
+
+.BudgetListContainer {
+    padding-left: 0;
+    border-style: solid;
+    display: flex;
+    flex-direction: column;
+}
+
+.BudgetListTitle {
+    border-bottom: solid;
+}
+
+.BudgetListCol {
+    display: flex;
+    flex-direction: row;
+}
+
+.ID {
+    width: 33%
+}
+
+.Money {
+    width: 33%
+}
+
+.Note {
+    width: 34%
+}

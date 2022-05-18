@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import '../css/Lists.css';
 import { BudgetList, Items } from '../helper/BudgetList'
 import Button from './Button'
 
@@ -31,12 +32,21 @@ export default class List extends Component<Props, State> {
 
     render() {
         return (
-            <div className="List">
-                <ul>
-                    {this.state.list.getName()}
+            <div className="BudgetList">
+                <ul className='BudgetListContainer'>
+                    <div className="BudgetListTitle">{this.state.list.getName()}</div>
+                    <div className="BudgetListCol">
+                        <div className='ID'>ID</div>
+                        <div className='Money'>Money</div>
+                        <div className='Note'>Note</div>
+                    </div>
                     {
                         this.state.list.getItems().map((comp) => {
-                            return <li>ID: {comp.id} ---- Money: {comp.money} ---- Note: {comp.note}</li>
+                            return  <div className="BudgetListCol">
+                                        <div className='ID'>{comp.id}</div>
+                                        <div className='Money'>{comp.money}</div>
+                                        <div className='Note'>{comp.note}</div>
+                                    </div>
                         })
                     }
                 </ul>
