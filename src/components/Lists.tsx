@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import '../css/Lists.css';
 import { BudgetList, Items } from '../helper/BudgetList'
 import Button from './Button'
+import Popup from './Popup';
 import TextBox from './TextBox';
 
 type Props = { listID: number, listName: string }
@@ -13,6 +14,15 @@ export default class List extends Component<Props, State> {
         listID: this.props.listID,
         list: new BudgetList(this.props.listName, false),
         id: 0
+    }
+
+    newItemPopUp(): void {
+        let el = (document.getElementById(`popup${this.state.listID}`) as HTMLElement)
+        if (el.style.display === 'block') {
+            el.style.display = 'none'
+        } else {
+            el.style.display = 'block'
+        }
     }
 
     generateNewItem(): boolean {
@@ -35,6 +45,21 @@ export default class List extends Component<Props, State> {
     render() {
         return (
             <div className="BudgetList">
+                <Popup id={`popup${this.state.listID}`} style={{display: 'none'}}>
+                    Popup for: {this.state.listID}
+                    <Button name={'new item'} onClick={() => {
+                        this.generateNewItem()
+                    }} />
+                    <Button name={'delete'} onClick={() => {
+                        this.state.list.removeItem(parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value))
+                        this.setState({
+                            listID: this.state.listID,
+                            list: this.state.list,
+                            id: this.state.id
+                        })
+                    }} />
+                    <TextBox id={`id_delete_${this.state.listID}`} placeholder='Enter item ID to delete:' />
+                </Popup>
                 <ul className='BudgetListContainer'>
                     <div className="BudgetListTitle">{this.state.list.getName()}</div>
                     <div className="BudgetListCol">
@@ -44,26 +69,17 @@ export default class List extends Component<Props, State> {
                     </div>
                     {
                         this.state.list.getItems().map((comp) => {
-                            return  <div key={comp.id} className="BudgetListCol">
-                                        <div className='ID'>{comp.id}</div>
-                                        <div className='Money'>{comp.money}</div>
-                                        <div className='Note'>{comp.note}</div>
-                                    </div>
+                            return <div key={comp.id} className="BudgetListCol">
+                                <div className='ID'>{comp.id}</div>
+                                <div className='Money'>{comp.money}</div>
+                                <div className='Note'>{comp.note}</div>
+                            </div>
                         })
                     }
                 </ul>
-                <Button name={'new item'} onClick={() => {
-                    this.generateNewItem()
+                <Button name={'Edit list'} onClick={() => {
+                    this.newItemPopUp()
                 }} />
-                <Button name={'delete'} onClick={() => {
-                    this.state.list.removeItem(parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value))
-                    this.setState({
-                        listID: this.state.listID,
-                        list: this.state.list,
-                        id: this.state.id
-                    })
-                }} />
-                <TextBox id={`id_delete_${this.state.listID}`} placeholder='Enter item ID to delete:'/>
             </div>
         )
     }
