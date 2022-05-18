@@ -2,14 +2,15 @@ import React, { Component } from 'react'
 import '../css/Lists.css';
 import { BudgetList, Items } from '../helper/BudgetList'
 import Button from './Button'
+import TextBox from './TextBox';
 
-type Props = { key: number, listName: string }
+type Props = { listID: number, listName: string }
 
-type State = { key: number, list: BudgetList, id: number }
+type State = { listID: number, list: BudgetList, id: number }
 
 export default class List extends Component<Props, State> {
     state: State = {
-        key: this.props.key,
+        listID: this.props.listID,
         list: new BudgetList(this.props.listName, false),
         id: 0
     }
@@ -21,6 +22,7 @@ export default class List extends Component<Props, State> {
             note: `Sample note with id: ${this.state.id}`
         })) {
             this.setState({
+                listID: this.state.listID,
                 list: this.state.list,
                 id: this.state.id + 1
             })
@@ -28,6 +30,10 @@ export default class List extends Component<Props, State> {
         } else {
             return false;
         }
+    }
+
+    deleteNewItem(item: Items): void {
+        this.state.list.removeItem(item);
     }
 
     render() {
@@ -53,6 +59,15 @@ export default class List extends Component<Props, State> {
                 <Button name={'new item'} onClick={() => {
                     this.generateNewItem()
                 }} />
+                <Button name={'delete'} onClick={() => {
+                    this.deleteNewItem({id: parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value), money: 0, note: ""})
+                    this.setState({
+                        listID: this.state.listID,
+                        list: this.state.list,
+                        id: this.state.id
+                    })
+                }} />
+                <TextBox id={`id_delete_${this.state.listID}`}/>
             </div>
         )
     }

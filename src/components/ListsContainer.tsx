@@ -19,7 +19,7 @@ export default class ListsContainer extends Component<Props, State> {
         
         let name: string = (document.getElementById("list_name") as HTMLInputElement).value;
 
-        newList.push(<List key={this.state.next_id} listName={name}/>);
+        newList.push(<List listID={this.state.next_id} listName={name}/>);
         this.setState({
             list: newList,
             next_id: this.state.next_id + 1
