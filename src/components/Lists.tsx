@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import '../css/Lists.css';
-import { BudgetList, Items } from '../helper/BudgetList'
+import { BudgetList } from '../helper/BudgetList'
 import Button from './Button'
 import Popup from './Popup';
 import TextBox from './TextBox';
