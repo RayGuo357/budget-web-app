@@ -1,4 +1,3 @@
-import { totalmem } from 'os';
 import React, { Component } from 'react'
 import '../css/Lists.css';
 import { BudgetList } from '../helper/BudgetList'

@@ -3,7 +3,6 @@ import '../css/Lists.css';
 import List from './Lists'
 import Button from './Button'
 import TextBox from './TextBox';
-import { BudgetList } from '../helper/BudgetList';
 
 type Props = {}
 
