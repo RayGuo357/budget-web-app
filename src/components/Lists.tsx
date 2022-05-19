@@ -1,3 +1,4 @@
+import { totalmem } from 'os';
 import React, { Component } from 'react'
 import '../css/Lists.css';
 import { BudgetList } from '../helper/BudgetList'
@@ -5,14 +6,15 @@ import Button from './Button'
 import Popup from './Popup';
 import TextBox from './TextBox';
 
-type Props = { listID: number, listName: string }
+type Props = { listID: number, listName: string, onTotal: any }
 
-type State = { listID: number, list: BudgetList, id: number }
+type State = { listID: number, list: BudgetList, total: number, id: number }
 
 export default class List extends Component<Props, State> {
     state: State = {
         listID: this.props.listID,
         list: new BudgetList(this.props.listName, false),
+        total: 0,
         id: 0
     }
 
@@ -25,38 +27,47 @@ export default class List extends Component<Props, State> {
         }
     }
 
-    generateNewItem(): boolean {
+    generateNewItem(id: number, money: number, note: string): boolean {
         if (this.state.list.addItem({
-            id: this.state.id,
-            money: this.state.id * 200,
-            note: `Sample note with id: ${this.state.id}`
+            id: id,
+            money: money,
+            note: note
         })) {
             this.setState({
                 listID: this.state.listID,
                 list: this.state.list,
+                total: this.state.list.getTotal(),
                 id: this.state.id + 1
             })
+            this.props.onTotal(this.state.listID, this.state.list.getTotal())
             return true;
         } else {
             return false;
         }
     }
 
+    removeItem(id: number) {
+        if (this.state.list.removeItem(id)) {
+            this.setState({
+                listID: this.state.listID,
+                list: this.state.list,
+                total: this.state.list.getTotal(),
+                id: this.state.id
+            })
+            this.props.onTotal(this.state.listID, this.state.list.getTotal())
+        }
+    }
+
     render() {
         return (
             <div className="BudgetList">
-                <Popup id={`popup${this.state.listID}`} style={{display: 'none'}}>
+                <Popup id={`popup${this.state.listID}`} style={{ display: 'none' }}>
                     Popup for: {this.props.listName}
                     <Button name={'new item'} onClick={() => {
-                        this.generateNewItem()
+                        this.generateNewItem(this.state.id, this.state.id * 200, `Sample note with id: ${this.state.id}`)
                     }} />
                     <Button name={'delete'} onClick={() => {
-                        this.state.list.removeItem(parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value))
-                        this.setState({
-                            listID: this.state.listID,
-                            list: this.state.list,
-                            id: this.state.id
-                        })
+                        this.removeItem(parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value))
                     }} />
                     <TextBox id={`id_delete_${this.state.listID}`} placeholder='Enter item ID to delete:' />
                 </Popup>
@@ -80,6 +91,7 @@ export default class List extends Component<Props, State> {
                 <Button name={'Edit list'} onClick={() => {
                     this.newItemPopUp()
                 }} />
+                <div>Total for {this.props.listName}: {this.state.total}</div>
             </div>
         )
     }
