@@ -3,7 +3,7 @@ export type Items = { id: number, money: number, note: string };
 export interface IBudgetList {
     getName(): string;
     getIsExpenses(): boolean;
-    getItem(id: number): Items | void;
+    getItem(id: number): Items | null;
     getItems(): Items[];
     getNumItems(): number;
     getTotal(): number;
@@ -36,10 +36,11 @@ export class BudgetList implements IBudgetList {
         return this.isExpenses;
     };
 
-    getItem(id: number): Items | void {
+    getItem(id: number): Items | null {
         for (let e of this.items) {
             if (e.id === id) return e
         }
+        return null
     }
 
     getItems(): Items[] {
