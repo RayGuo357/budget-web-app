@@ -14,16 +14,12 @@ app.get('/', (req, res) => {
 });
 
 app.post('/save', jsonParser, (req, res) => {
-  fs.writeFile('../logs/test.json', JSON.stringify(req.body), err => {
+  let filename = req.body.date
+  fs.writeFileSync(`../logs/${filename}.json`, JSON.stringify(req.body), err => {
     if (err) {
       console.log(err)
     }
   })
-  fs.readFile('../logs/test.json', (err, data) => {
-    if (err) throw err;
-    console.log(data);
-  })
-  console.log(req.body)
 })
 
 app.get('*', (req, res) => {

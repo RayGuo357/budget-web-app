@@ -62,12 +62,20 @@ export default class ListsContainer extends Component<Props, State> {
     }
 
     async saveAsJSON() {
+        let date = `${new Date().getMonth() + 1}-${new Date().getDate()}-${new Date().getFullYear()}`
+        let data = {
+            list: this.state.list,
+            totalPerList: this.state.totalPerList,
+            total: this.state.total,
+            next_id: this.state.next_id,
+            date: date
+        }
         await fetch('http://192.168.0.114:6464/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(this.state)
+            body: JSON.stringify(data)
         })
             .then((res) => res.json())
             .then((res) => {
