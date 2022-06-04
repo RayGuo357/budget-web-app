@@ -24,7 +24,7 @@ export default class ListsContainer extends Component<Props, State> {
         newList.push(<List key={this.state.next_id}
             listID={this.state.next_id}
             listName={name}
-            onTotal={this.total}/>);
+            onTotal={this.total} />);
 
         let newTotalList = this.state.totalPerList
         newTotalList.set(this.state.next_id.toString(), 0)
@@ -57,6 +57,24 @@ export default class ListsContainer extends Component<Props, State> {
         })
     }
 
+    getTodaysDate() {
+
+    }
+
+    async saveAsJSON() {
+        await fetch('http://192.168.0.114:6464/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state)
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res);
+            });
+    }
+
     render() {
         return (
             <div className="ListContainer">
@@ -70,6 +88,10 @@ export default class ListsContainer extends Component<Props, State> {
                     this.generateNewList()
                 }} />
                 <div>Total: {this.state.total}</div>
+                <div>Today is: {new Date().getMonth() + 1}-{new Date().getDate()}-{new Date().getFullYear()}</div>
+                <Button name={'save'} onClick={() => {
+                    this.saveAsJSON()
+                }} />
             </div>
         )
     }
