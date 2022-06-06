@@ -1,5 +1,5 @@
 export const getTodaysDate = (): string => {
-    return `${new Date().getMonth() + 1}-${new Date().getDate()}-${new Date().getFullYear()}`
+    return `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
 }
 
 export const getCircularReplacer = (): any => {

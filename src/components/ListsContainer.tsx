@@ -47,7 +47,8 @@ export default class ListsContainer extends Component<Props, State> {
             ref={ref}
             listID={this.state.list.length}
             listName={name}
-            onTotal={this.total} />);
+            onTotal={this.total}
+            save={this.saveAsJSON} />);
 
         // Initializes total for the new list
         let newTotalList: Map<string, number> = this.state.totalPerList
@@ -60,7 +61,7 @@ export default class ListsContainer extends Component<Props, State> {
             refPerList: this.state.refPerList,
             total: this.state.total,
             next_id: this.state.next_id + 1
-        }, async () => {console.log('done setting state')});
+        });
 
         // Clears input
         (document.getElementById("list_name") as HTMLInputElement).value = "";
@@ -69,7 +70,7 @@ export default class ListsContainer extends Component<Props, State> {
 
     // Used by the child components to total their items
     // Maybe obsolete
-    total = (listID: number, money: number): void => {
+    total = (listID: number, money: number) => {
         let newTotalList: Map<string, number> = this.state.totalPerList
         newTotalList.set(listID.toString(), money)
 
@@ -98,15 +99,10 @@ export default class ListsContainer extends Component<Props, State> {
             .then(res => res.json())
             .then(res => {
                 res.listContainer.forEach(async (e: any) => {
-                    console.log(e)
-                    let currID = this.state.next_id
-                    console.log(currID)
                     this.generateNewList(e.list.name)
                     await sleep(500)
-                    console.log(this)
                     // TODO: Going too fast
                     e.list.items.forEach((i: any) => {
-                        console.log(this.state.refPerList.get(e.listID.toString()))
                         this.getRef(e.listID.toString())?.current?.generateNewItem(i.money, i.note)
                     })
                 })
@@ -114,12 +110,12 @@ export default class ListsContainer extends Component<Props, State> {
     }
 
     // API call to server to save as JSON
-    saveAsJSON(): void {
+    saveAsJSON = (): void => {
+        console.log('saving')
         // Creates body to send with API call
         let date: string = getTodaysDate()
         let listData: any = []
         this.state.refPerList.forEach((e) => {
-            console.log(e)
             listData.push(e.current!.state)
         })
         let data: {} = {
@@ -155,6 +151,7 @@ export default class ListsContainer extends Component<Props, State> {
                 <TextBox id='list_name' placeholder='Enter new list name:' />
                 <Button name={'new list'} onClick={() => {
                     this.generateNewList((document.getElementById("list_name") as HTMLInputElement).value)
+                    // this.saveAsJSON()
                 }} />
                 <div>Total: {this.state.total}</div>
                 <div>Today is: {getTodaysDate()}</div>

@@ -5,7 +5,7 @@ import Button from './Button'
 import Popup from './Popup';
 import TextBox from './TextBox';
 
-type Props = { listID: number, ref: React.RefObject<List>, listName: string, onTotal: any }
+type Props = { listID: number, ref: React.RefObject<List>, listName: string, onTotal: any, save: any }
 
 type State = { listID: number, list: BudgetList, total: number, nextID: number }
 
@@ -26,7 +26,7 @@ export default class List extends Component<Props, State> {
         }
     }
 
-    generateNewItem(money: number, note: string,id: number = this.state.list.getItems().length): boolean {
+    generateNewItem(money: number, note: string, id: number = this.state.list.getItems().length): boolean {
         if (this.state.list.addItem({
             id: id,
             money: money,
@@ -64,6 +64,7 @@ export default class List extends Component<Props, State> {
                     Popup for: {this.props.listName}
                     <Button name={'new item'} onClick={() => {
                         this.generateNewItem(this.state.nextID * 200, `Sample note with id: ${this.state.nextID}`, this.state.list.getItems().length)
+                        this.props.save()
                     }} />
                     <Button name={'delete'} onClick={() => {
                         this.removeItem(parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value))
