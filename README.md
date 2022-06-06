@@ -1,5 +1,5 @@
 # Budget Web App: The Start
----
+
 The start of my personal web app that can be used for budgeting.
 
 ## TODO
