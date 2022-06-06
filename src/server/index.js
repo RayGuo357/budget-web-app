@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 
 app.post('/save', jsonParser, (req, res) => {
   let filename = req.body.date
+  console.log(req.body)
   fs.writeFileSync(`../logs/${filename}.json`, JSON.stringify(req.body), err => {
     if (err) {
       console.log(err)

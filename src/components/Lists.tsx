@@ -5,16 +5,16 @@ import Button from './Button'
 import Popup from './Popup';
 import TextBox from './TextBox';
 
-type Props = { listID: number, listName: string, onTotal: any }
+type Props = { listID: number, ref: React.RefObject<List>, listName: string, onTotal: any }
 
-type State = { listID: number, list: BudgetList, total: number, id: number }
+type State = { listID: number, list: BudgetList, total: number, nextID: number }
 
 export default class List extends Component<Props, State> {
     state: State = {
         listID: this.props.listID,
         list: new BudgetList(this.props.listName, false),
         total: 0,
-        id: 0
+        nextID: 0
     }
 
     newItemPopUp(): void {
@@ -36,7 +36,7 @@ export default class List extends Component<Props, State> {
                 listID: this.state.listID,
                 list: this.state.list,
                 total: this.state.list.getTotal(),
-                id: this.state.id + 1
+                nextID: this.state.nextID + 1
             })
             this.props.onTotal(this.state.listID, this.state.list.getTotal())
             return true;
@@ -51,7 +51,7 @@ export default class List extends Component<Props, State> {
                 listID: this.state.listID,
                 list: this.state.list,
                 total: this.state.list.getTotal(),
-                id: this.state.id
+                nextID: this.state.nextID
             })
             this.props.onTotal(this.state.listID, this.state.list.getTotal())
         }
@@ -63,7 +63,7 @@ export default class List extends Component<Props, State> {
                 <Popup id={`popup${this.state.listID}`} style={{ display: 'none' }}>
                     Popup for: {this.props.listName}
                     <Button name={'new item'} onClick={() => {
-                        this.generateNewItem(this.state.id, this.state.id * 200, `Sample note with id: ${this.state.id}`)
+                        this.generateNewItem(this.state.nextID, this.state.nextID * 200, `Sample note with id: ${this.state.nextID}`)
                     }} />
                     <Button name={'delete'} onClick={() => {
                         this.removeItem(parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value))
@@ -90,6 +90,9 @@ export default class List extends Component<Props, State> {
                 <Button name={'Edit list'} onClick={() => {
                     this.newItemPopUp()
                 }} />
+                <Button name={'test state'} onClick={() => {
+                    console.log(this.state)
+                }}/>
                 <div>Total for {this.props.listName}: {this.state.total}</div>
             </div>
         )
