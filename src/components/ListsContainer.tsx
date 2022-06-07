@@ -3,10 +3,11 @@ import '../css/Lists.css';
 import List from './Lists'
 import Button from './Button'
 import TextBox from './TextBox';
-import { getTodaysDate, API, sleep } from '../helper/helper'
+import { getTodaysDate, API, sleep, generatePayload } from '../helper/helper'
 import { BudgetList } from '../helper/BudgetList'
+import ChartContainer from './ChartContainer';
 
-type Props = {}
+type Props = { refToChart: React.RefObject<ChartContainer> }
 
 type State = { list: React.ReactElement[], totalPerList: Map<string, number>, refPerList: Map<string, React.RefObject<List>>, total: number, next_id: number }
 
@@ -20,8 +21,20 @@ export default class ListsContainer extends Component<Props, State> {
         next_id: 0
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.loadJSON()
+    }
+
+    updateChart = (): void => {
+        let labels: string[] = []
+        let data: number[] = []
+
+        this.state.refPerList.forEach((e) => {
+            console.log(e)
+            labels.push(e.current!.state.list.getName())
+            data.push(e.current!.state.total)
+        })
+        this.props.refToChart.current?.updateChart(generatePayload(labels, data))
     }
 
     generateNewList(name: string): void {
@@ -39,7 +52,7 @@ export default class ListsContainer extends Component<Props, State> {
             totalPerList: this.state.totalPerList,
             refPerList: refPerList,
             total: this.state.total,
-            next_id: this.state.next_id
+            next_id: this.state.list.length
         })
 
         // Add the new list to the copy
@@ -48,7 +61,8 @@ export default class ListsContainer extends Component<Props, State> {
             listID={this.state.list.length}
             listName={name}
             onTotal={this.total}
-            save={this.saveAsJSON} />);
+            save={this.saveAsJSON}
+            update={this.updateChart} />);
 
         // Initializes total for the new list
         let newTotalList: Map<string, number> = this.state.totalPerList
@@ -60,7 +74,7 @@ export default class ListsContainer extends Component<Props, State> {
             totalPerList: newTotalList,
             refPerList: this.state.refPerList,
             total: this.state.total,
-            next_id: this.state.next_id + 1
+            next_id: newList.length
         });
 
         // Clears input
@@ -70,7 +84,7 @@ export default class ListsContainer extends Component<Props, State> {
 
     // Used by the child components to total their items
     // Maybe obsolete
-    total = (listID: number, money: number) => {
+    total = (listID: number, money: number): void => {
         let newTotalList: Map<string, number> = this.state.totalPerList
         newTotalList.set(listID.toString(), money)
 
@@ -85,7 +99,7 @@ export default class ListsContainer extends Component<Props, State> {
             totalPerList: newTotalList,
             refPerList: this.state.refPerList,
             total: newTotal,
-            next_id: this.state.next_id
+            next_id: this.state.list.length
         })
     }
 
@@ -159,7 +173,7 @@ export default class ListsContainer extends Component<Props, State> {
                     this.saveAsJSON()
                 }} />
                 <Button name={'test'} onClick={() => {
-                    console.log(this.state)
+                    this.updateChart()
                 }} />
                 <Button name={'add all'} onClick={() => {
                     console.log(this.state.refPerList)

@@ -1,6 +1,6 @@
 .ListContainer {
-    width: 50%;
-    height: 100%;
+    width: 50vw;
+    height: 100vh;
     /* border-style: solid; */
 }
 
@@ -42,6 +42,11 @@
 .BudgetListCol {
     display: flex;
     flex-direction: row;
+}
+
+.BudgetListCol:hover {
+    background-color: gray;
+    color: white;
 }
 
 .ID {

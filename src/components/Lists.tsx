@@ -5,7 +5,7 @@ import Button from './Button'
 import Popup from './Popup';
 import TextBox from './TextBox';
 
-type Props = { listID: number, ref: React.RefObject<List>, listName: string, onTotal: any, save: any }
+type Props = { listID: number, ref: React.RefObject<List>, listName: string, onTotal: any, save: any, update: any }
 
 type State = { listID: number, list: BudgetList, total: number, nextID: number }
 
@@ -36,7 +36,7 @@ export default class List extends Component<Props, State> {
                 listID: this.state.listID,
                 list: this.state.list,
                 total: this.state.list.getTotal(),
-                nextID: this.state.nextID + 1
+                nextID: this.state.list.getItems().length
             })
             this.props.onTotal(this.state.listID, this.state.list.getTotal())
             return true;
@@ -51,10 +51,16 @@ export default class List extends Component<Props, State> {
                 listID: this.state.listID,
                 list: this.state.list,
                 total: this.state.list.getTotal(),
-                nextID: this.state.nextID
+                nextID: this.state.list.getItems().length
             })
             this.props.onTotal(this.state.listID, this.state.list.getTotal())
         }
+    }
+
+    handleClick = (e: any) => {
+        this.removeItem(+e.currentTarget.id)
+        this.props.save()
+        this.props.update()
     }
 
     render() {
@@ -65,9 +71,11 @@ export default class List extends Component<Props, State> {
                     <Button name={'new item'} onClick={() => {
                         this.generateNewItem(this.state.nextID * 200, `Sample note with id: ${this.state.nextID}`, this.state.list.getItems().length)
                         this.props.save()
+                        this.props.update()
                     }} />
                     <Button name={'delete'} onClick={() => {
                         this.removeItem(parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value))
+                        this.props.save()
                     }} />
                     <TextBox id={`id_delete_${this.state.listID}`} placeholder='Enter item ID to delete:' />
                 </Popup>
@@ -80,7 +88,7 @@ export default class List extends Component<Props, State> {
                     </div>
                     {
                         this.state.list.getItems().map((comp) => {
-                            return <div key={comp.id} className="BudgetListCol">
+                            return <div key={comp.id} className="BudgetListCol" id={comp.id.toString()} onClick={this.handleClick}>
                                 <div className='ID'>{comp.id}</div>
                                 <div className='Money'>{comp.money}</div>
                                 <div className='Note'>{comp.note}</div>
