@@ -25,6 +25,7 @@ export default class ListsContainer extends Component<Props, State> {
         this.loadJSON()
     }
 
+    // TODO: old data
     updateChart = (): void => {
         let labels: string[] = []
         let data: number[] = []
@@ -115,10 +116,16 @@ export default class ListsContainer extends Component<Props, State> {
                 res.listContainer.forEach(async (e: any) => {
                     this.generateNewList(e.list.name)
                     await sleep(500)
-                    // TODO: Going too fast
+                    let newList = new BudgetList(e.list.name, e.list.isExpenses)
                     e.list.items.forEach((i: any) => {
-                        this.getRef(e.listID.toString())?.current?.generateNewItem(i.money, i.note)
+                        newList.addItem({
+                            id: i.id,
+                            money: i.money,
+                            note: i.note
+                        })
                     })
+                    e.list = newList
+                    this.getRef(e.listID.toString())?.current?.setState(e)
                 })
             })
     }

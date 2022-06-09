@@ -15,7 +15,7 @@ export const getCircularReplacer = (): any => {
     };
 };
 
-export const generatePayload = (labels: string[] = ['Income'], data: number[] = [12]): {} => {
+export const generatePayload = (labels: string[] = [], data: number[] = []): {} => {
     return {
         labels: labels,
         datasets: [
@@ -48,4 +48,4 @@ export const sleep = (milliseconds: number) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-export const API = 'http://192.168.0.114:6464'
+export const API = 'http://192.168.0.5:6464'

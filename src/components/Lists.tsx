@@ -4,6 +4,7 @@ import { BudgetList } from '../helper/BudgetList'
 import Button from './Button'
 import Popup from './Popup';
 import TextBox from './TextBox';
+import { sleep } from '../helper/helper'
 
 type Props = { listID: number, ref: React.RefObject<List>, listName: string, onTotal: any, save: any, update: any }
 
@@ -36,7 +37,7 @@ export default class List extends Component<Props, State> {
                 listID: this.state.listID,
                 list: this.state.list,
                 total: this.state.list.getTotal(),
-                nextID: this.state.list.getItems().length
+                nextID: this.state.nextID + 1
             })
             this.props.onTotal(this.state.listID, this.state.list.getTotal())
             return true;
@@ -51,14 +52,16 @@ export default class List extends Component<Props, State> {
                 listID: this.state.listID,
                 list: this.state.list,
                 total: this.state.list.getTotal(),
-                nextID: this.state.list.getItems().length
+                nextID: this.state.nextID
             })
             this.props.onTotal(this.state.listID, this.state.list.getTotal())
         }
     }
 
-    handleClick = (e: any) => {
+    handleClick = async (e: any) => {
+        // TODO: Bug with duplicate id
         this.removeItem(+e.currentTarget.id)
+        await sleep(250)
         this.props.save()
         this.props.update()
     }
@@ -68,8 +71,9 @@ export default class List extends Component<Props, State> {
             <div className="BudgetList">
                 <Popup id={`popup${this.state.listID}`} style={{ display: 'none' }}>
                     Popup for: {this.props.listName}
-                    <Button name={'new item'} onClick={() => {
-                        this.generateNewItem(this.state.nextID * 200, `Sample note with id: ${this.state.nextID}`, this.state.list.getItems().length)
+                    <Button name={'new item'} onClick={async () => {
+                        this.generateNewItem(this.state.nextID * 200, `Sample note with id: ${this.state.nextID}`, this.state.nextID)
+                        await sleep(250)
                         this.props.save()
                         this.props.update()
                     }} />
