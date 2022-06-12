@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import '../css/ChartContainer.css'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartDataset, ChartData } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
 
@@ -12,11 +13,11 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 class ChartContainer extends Component<Props, State> {
     state: State = {
         data: {
-            labels: ['Income'],
+            labels: [],
             datasets: [
                 {
                     label: '$ of Income',
-                    data: [12],
+                    data: [],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',

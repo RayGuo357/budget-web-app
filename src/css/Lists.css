@@ -1,6 +1,10 @@
 .ListContainer {
     width: 50vw;
-    height: 100vh;
+    height: 100%;
+    color: #DDDDDD
+    /* padding-top: 1%;
+    padding-left: 1%;
+    padding-right: 1%; */
     /* border-style: solid; */
 }
 
@@ -26,6 +30,10 @@
     color: white;
 }
 
+.BudgetList {
+    padding: 2%;
+}
+
 .BudgetListContainer {
     padding-left: 0;
     margin: 0;
@@ -33,9 +41,17 @@
     display: flex;
     flex-direction: column;
     border-radius: 18px;
+    overflow: hidden;
+    color:#DDDDDD
 }
 
 .BudgetListTitle {
+    border-bottom: solid;
+}
+
+.BudgetListTitle:hover {
+    background-color: #F05454;
+    color: #222831;
     border-bottom: solid;
 }
 
@@ -45,8 +61,8 @@
 }
 
 .BudgetListCol:hover {
-    background-color: gray;
-    color: white;
+    background-color: #30475E;
+    color: #DDDDDD;
 }
 
 .ID {
@@ -59,4 +75,8 @@
 
 .Note {
     width: 34%
+}
+
+#is_expenses {
+    color: #DDDDDD;
 }

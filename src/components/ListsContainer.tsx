@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import '../css/Lists.css';
-import List from './Lists'
-import Button from './Button'
+import '../css/ListsContainer.css';
+import List from './Lists';
+import Button from './Button';
 import TextBox from './TextBox';
-import { getTodaysDate, API, sleep, generatePayload } from '../helper/helper'
-import { BudgetList } from '../helper/BudgetList'
+import Checkbox from './Checkbox';
+import { getTodaysDate, API, sleep, generatePayload } from '../helper/helper';
+import { BudgetList } from '../helper/BudgetList';
 import ChartContainer from './ChartContainer';
 
 type Props = { refToChart: React.RefObject<ChartContainer> }
@@ -21,8 +23,10 @@ export default class ListsContainer extends Component<Props, State> {
         next_id: 0
     }
 
-    componentDidMount(): void {
+    async componentDidMount(): Promise<void> {
         this.loadJSON()
+        await sleep(600)
+        this.updateChart()
     }
 
     // TODO: old data
@@ -38,7 +42,7 @@ export default class ListsContainer extends Component<Props, State> {
         this.props.refToChart.current?.updateChart(generatePayload(labels, data))
     }
 
-    generateNewList(name: string): void {
+    generateNewList(name: string, isExpenses: boolean): void {
         // Initialize copy of current list
         let newList: React.ReactElement[] = this.state.list;
 
@@ -61,6 +65,7 @@ export default class ListsContainer extends Component<Props, State> {
             ref={ref}
             listID={this.state.list.length}
             listName={name}
+            isExpenses={isExpenses}
             onTotal={this.total}
             save={this.saveAsJSON}
             update={this.updateChart} />);
@@ -79,7 +84,7 @@ export default class ListsContainer extends Component<Props, State> {
         });
 
         // Clears input
-        (document.getElementById("list_name") as HTMLInputElement).value = "";
+        (document.querySelector("#list_name") as HTMLInputElement).value = "";
         return;
     }
 
@@ -114,10 +119,10 @@ export default class ListsContainer extends Component<Props, State> {
             .then(res => res.json())
             .then(res => {
                 res.listContainer.forEach(async (e: any) => {
-                    this.generateNewList(e.list.name)
+                    this.generateNewList(e.list.name, e.list.isExpenses)
                     await sleep(500)
                     let newList = new BudgetList(e.list.name, e.list.isExpenses)
-                    e.list.items.forEach((i: any) => {
+                    e.list.items.forEach((i: {id: number, money: number, note: string}) => {
                         newList.addItem({
                             id: i.id,
                             money: i.money,
@@ -135,7 +140,7 @@ export default class ListsContainer extends Component<Props, State> {
         console.log('saving')
         // Creates body to send with API call
         let date: string = getTodaysDate()
-        let listData: any = []
+        let listData: {}[] = []
         this.state.refPerList.forEach((e) => {
             listData.push(e.current!.state)
         })
@@ -170,8 +175,11 @@ export default class ListsContainer extends Component<Props, State> {
                     })
                 }
                 <TextBox id='list_name' placeholder='Enter new list name:' />
+                <Checkbox id='is_expenses' msg='Is an Expense?' />
                 <Button name={'new list'} onClick={() => {
-                    this.generateNewList((document.getElementById("list_name") as HTMLInputElement).value)
+                    let name = (document.querySelector("#list_name") as HTMLInputElement).value
+                    let isExpenses = (document.querySelector('#is_expenses') as HTMLInputElement).checked
+                    this.generateNewList(name, isExpenses)
                     // this.saveAsJSON()
                 }} />
                 <div>Total: {this.state.total}</div>

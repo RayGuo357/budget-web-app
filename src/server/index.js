@@ -6,11 +6,12 @@ const app = express();
 const port = process.env.PORT || 6464;
 
 app.use(cors())
+app.use(express.static('public'))
 let jsonParser = bodyParser.json()
 
 app.get('/', (req, res) => {
     console.log(__dirname)
-    res.send({ msg: 'Express + TypeScript Server' });
+    res.send({msg: 'Server'});
 });
 
 app.post('/save', jsonParser, (req, res) => {

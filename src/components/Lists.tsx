@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, MouseEventHandler } from 'react'
 import '../css/Lists.css';
 import { BudgetList } from '../helper/BudgetList'
 import Button from './Button'
@@ -6,20 +6,20 @@ import Popup from './Popup';
 import TextBox from './TextBox';
 import { sleep } from '../helper/helper'
 
-type Props = { listID: number, ref: React.RefObject<List>, listName: string, onTotal: any, save: any, update: any }
+type Props = { listID: number, ref: React.RefObject<List>, listName: string, isExpenses: boolean, onTotal: Function, save: Function, update: Function }
 
 type State = { listID: number, list: BudgetList, total: number, nextID: number }
 
 export default class List extends Component<Props, State> {
     state: State = {
         listID: this.props.listID,
-        list: new BudgetList(this.props.listName, false),
+        list: new BudgetList(this.props.listName, this.props.isExpenses),
         total: 0,
         nextID: 0
     }
 
     newItemPopUp(): void {
-        let el = (document.getElementById(`popup${this.state.listID}`) as HTMLElement)
+        let el = (document.querySelector(`#popup${this.state.listID}`) as HTMLElement)
         if (el.style.display === 'block') {
             el.style.display = 'none'
         } else {
@@ -46,7 +46,7 @@ export default class List extends Component<Props, State> {
         }
     }
 
-    removeItem(id: number) {
+    removeItem(id: number): void {
         if (this.state.list.removeItem(id)) {
             this.setState({
                 listID: this.state.listID,
@@ -58,8 +58,7 @@ export default class List extends Component<Props, State> {
         }
     }
 
-    handleClick = async (e: any) => {
-        // TODO: Bug with duplicate id
+    handleClick = async (e: any): Promise<void> => {
         this.removeItem(+e.currentTarget.id)
         await sleep(250)
         this.props.save()
@@ -78,13 +77,13 @@ export default class List extends Component<Props, State> {
                         this.props.update()
                     }} />
                     <Button name={'delete'} onClick={() => {
-                        this.removeItem(parseInt((document.getElementById(`id_delete_${this.state.listID}`) as HTMLInputElement).value))
+                        this.removeItem(parseInt((document.querySelector(`#id_delete_${this.state.listID}`) as HTMLInputElement).value))
                         this.props.save()
                     }} />
                     <TextBox id={`id_delete_${this.state.listID}`} placeholder='Enter item ID to delete:' />
                 </Popup>
                 <ul className='BudgetListContainer'>
-                    <div className="BudgetListTitle">{this.state.list.getName()}</div>
+                    <div className="BudgetListTitle" onClick={() => this.newItemPopUp()}>{this.state.list.getName()}</div>
                     <div className="BudgetListCol">
                         <div className='ID'>ID</div>
                         <div className='Money'>Money</div>
@@ -100,9 +99,6 @@ export default class List extends Component<Props, State> {
                         })
                     }
                 </ul>
-                <Button name={'Edit list'} onClick={() => {
-                    this.newItemPopUp()
-                }} />
                 <Button name={'test state'} onClick={() => {
                     console.log(this.state)
                 }}/>
