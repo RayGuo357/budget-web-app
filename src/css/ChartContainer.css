@@ -4,6 +4,21 @@
     background-color: #222831;
 }
 
+.LegendContainer {
+    padding-top: 8%;
+}
+
 .Legend {
     color: #DDDDDD;
+    display: flex;
+    justify-content: space-between;
+    padding: 2.5%;
+}
+
+.Legend:hover {
+    background-color: #30475E;
+    color: #DDDDDD;
+    display: flex;
+    justify-content: space-between;
+    padding: 2.5%;
 }

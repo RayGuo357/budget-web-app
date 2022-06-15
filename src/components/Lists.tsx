@@ -1,4 +1,4 @@
-import React, { Component, MouseEventHandler } from 'react'
+import React, { Component } from 'react'
 import '../css/Lists.css';
 import { BudgetList } from '../helper/BudgetList'
 import Button from './Button'

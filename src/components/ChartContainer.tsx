@@ -53,11 +53,16 @@ class ChartContainer extends Component<Props, State> {
         return (
             <div className="ChartContainer">
                 <Doughnut data={this.state.data as ChartData<"doughnut", number[], unknown>} />
-                {
-                    Array.from( this.state.labels ).map(([key, val]) => {
-                        return (<div className='Legend'>{key}: ${val}</div>)
-                    })
-                }
+                <div className='LegendContainer'>
+                    {
+                        Array.from(this.state.labels).map(([key, val]) => {
+                            return (<div className='Legend'>
+                                <div>{key}:</div>
+                                <div>${val}</div>
+                            </div>)
+                        })
+                    }
+                </div>
             </div>
         )
     }
