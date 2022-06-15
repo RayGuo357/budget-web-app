@@ -22,3 +22,9 @@
     justify-content: space-between;
     padding: 2.5%;
 }
+
+.AvailableLegend {
+    font-weight: bold;
+    border-bottom: 4px solid #DDDDDD;
+    border-top: 4px solid #DDDDDD;
+}

@@ -1,3 +1,5 @@
+export type DataType = {labels: string[], datasets: {label: string, data: number[], backgroundColor: string[], borderColor: string[], borderWidth: number}[]}
+
 export const getTodaysDate = (): string => {
     return `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
 }
@@ -15,7 +17,7 @@ export const getCircularReplacer = (): any => {
     };
 };
 
-export const generatePayload = (labels: string[] = [], data: number[] = []): {} => {
+export const generatePayload = (labels: string[] = [], data: number[] = []): DataType => {
     return {
         labels: labels,
         datasets: [
@@ -46,6 +48,10 @@ export const generatePayload = (labels: string[] = [], data: number[] = []): {} 
 
 export const sleep = (milliseconds: number) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
+export const sumArray = (arr: number[]) => {
+    return arr.reduce((a, b) => a + b, 0)
 }
 
 export const API = 'http://192.168.0.5:6464'

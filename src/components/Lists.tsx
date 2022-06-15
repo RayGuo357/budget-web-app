@@ -107,7 +107,6 @@ export default class List extends Component<Props, State> {
                 <Button name={'test state'} onClick={() => {
                     console.log(this.state)
                 }}/>
-                <div>Total for {this.getName()}: {this.getTotal()}</div>
             </div>
         )
     }

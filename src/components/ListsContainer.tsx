@@ -5,7 +5,7 @@ import List from './Lists';
 import Button from './Button';
 import TextBox from './TextBox';
 import Checkbox from './Checkbox';
-import { getTodaysDate, API, sleep, generatePayload } from '../helper/helper';
+import { getTodaysDate, API, sleep, generatePayload, sumArray } from '../helper/helper';
 import { BudgetList } from '../helper/BudgetList';
 import ChartContainer from './ChartContainer';
 
@@ -31,16 +31,23 @@ export default class ListsContainer extends Component<Props, State> {
 
     // TODO: old data
     updateChart = (): void => {
-        let labels: string[] = []
-        let data: number[] = []
+        let labels: string[] = ['Available']
+        let data: number[] = [0]
         let newMap: Map<string, number> = new Map<string, number>()
+        let expenses = 0
+        let income = 0
 
         this.state.refPerList.forEach((e) => {
-            console.log(e)
             labels.push(e.current!.state.list.getName())
             data.push(e.current!.getTotal())
+            if (e.current!.state.list.getIsExpenses()) {
+                expenses += e.current!.getTotal()
+            } else {
+                income += e.current!.getTotal()
+            }
             newMap.set(e.current!.getName(), e.current!.getTotal())
         })
+        data[0] = income - expenses
         this.props.refToChart.current?.updateChart(generatePayload(labels, data), newMap)
     }
 
