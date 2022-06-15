@@ -5,10 +5,11 @@ import { Doughnut } from 'react-chartjs-2'
 
 type Props = { ref: React.RefObject<any> }
 
-type State = { data: {} }
+type State = { data: {}, labels: Map<string, number> }
 // https://react-chartjs-2.js.org/components/
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.defaults.color = "#DDDDDD";
 
 class ChartContainer extends Component<Props, State> {
     state: State = {
@@ -37,12 +38,14 @@ class ChartContainer extends Component<Props, State> {
                     borderWidth: 1,
                 },
             ],
-        }
+        },
+        labels: new Map<string, number>()
     }
 
-    updateChart(newData: {}): void {
+    updateChart(newData: {}, newMap: Map<string, number>): void {
         this.setState({
-            data: newData
+            data: newData,
+            labels: newMap
         })
     }
 
@@ -50,6 +53,11 @@ class ChartContainer extends Component<Props, State> {
         return (
             <div className="ChartContainer">
                 <Doughnut data={this.state.data as ChartData<"doughnut", number[], unknown>} />
+                {
+                    Array.from( this.state.labels ).map(([key, val]) => {
+                        return (<div className='Legend'>{key}: ${val}</div>)
+                    })
+                }
             </div>
         )
     }

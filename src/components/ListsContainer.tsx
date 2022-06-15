@@ -33,13 +33,15 @@ export default class ListsContainer extends Component<Props, State> {
     updateChart = (): void => {
         let labels: string[] = []
         let data: number[] = []
+        let newMap: Map<string, number> = new Map<string, number>()
 
         this.state.refPerList.forEach((e) => {
             console.log(e)
             labels.push(e.current!.state.list.getName())
-            data.push(e.current!.state.total)
+            data.push(e.current!.getTotal())
+            newMap.set(e.current!.getName(), e.current!.getTotal())
         })
-        this.props.refToChart.current?.updateChart(generatePayload(labels, data))
+        this.props.refToChart.current?.updateChart(generatePayload(labels, data), newMap)
     }
 
     generateNewList(name: string, isExpenses: boolean): void {
@@ -66,9 +68,8 @@ export default class ListsContainer extends Component<Props, State> {
             listID={this.state.list.length}
             listName={name}
             isExpenses={isExpenses}
-            onTotal={this.total}
             save={this.saveAsJSON}
-            update={this.updateChart} />);
+            updateChart={this.updateChart} />);
 
         // Initializes total for the new list
         let newTotalList: Map<string, number> = this.state.totalPerList
@@ -90,24 +91,24 @@ export default class ListsContainer extends Component<Props, State> {
 
     // Used by the child components to total their items
     // Maybe obsolete
-    total = (listID: number, money: number): void => {
-        let newTotalList: Map<string, number> = this.state.totalPerList
-        newTotalList.set(listID.toString(), money)
+    // total = (listID: number, money: number): void => {
+    //     let newTotalList: Map<string, number> = this.state.totalPerList
+    //     newTotalList.set(listID.toString(), money)
 
-        let newTotal = 0;
-        for (let entry of Array.from(newTotalList.entries())) {
-            let key: string = entry[0], val: number = entry[1]
-            newTotal += val
-        }
+    //     let newTotal = 0;
+    //     for (let entry of Array.from(newTotalList.entries())) {
+    //         let key: string = entry[0], val: number = entry[1]
+    //         newTotal += val
+    //     }
 
-        this.setState({
-            list: this.state.list,
-            totalPerList: newTotalList,
-            refPerList: this.state.refPerList,
-            total: newTotal,
-            next_id: this.state.list.length
-        })
-    }
+    //     this.setState({
+    //         list: this.state.list,
+    //         totalPerList: newTotalList,
+    //         refPerList: this.state.refPerList,
+    //         total: newTotal,
+    //         next_id: this.state.list.length
+    //     })
+    // }
 
     getRef(ID: string): React.RefObject<List> | undefined {
         return this.state.refPerList.get(ID)
@@ -122,7 +123,7 @@ export default class ListsContainer extends Component<Props, State> {
                     this.generateNewList(e.list.name, e.list.isExpenses)
                     await sleep(500)
                     let newList = new BudgetList(e.list.name, e.list.isExpenses)
-                    e.list.items.forEach((i: {id: number, money: number, note: string}) => {
+                    e.list.items.forEach((i: { id: number, money: number, note: string }) => {
                         newList.addItem({
                             id: i.id,
                             money: i.money,
@@ -169,11 +170,13 @@ export default class ListsContainer extends Component<Props, State> {
     render() {
         return (
             <div className="ListContainer">
-                {
-                    this.state.list.map((comp) => {
-                        return comp
-                    })
-                }
+                <div className='ListTable'>
+                    {
+                        this.state.list.map((comp) => {
+                            return comp
+                        })
+                    }
+                </div>
                 <TextBox id='list_name' placeholder='Enter new list name:' />
                 <Checkbox id='is_expenses' msg='Is an Expense?' />
                 <Button name={'new list'} onClick={() => {
@@ -188,7 +191,7 @@ export default class ListsContainer extends Component<Props, State> {
                     this.saveAsJSON()
                 }} />
                 <Button name={'test'} onClick={() => {
-                    this.updateChart()
+                    console.log(this.state.totalPerList)
                 }} />
                 <Button name={'add all'} onClick={() => {
                     console.log(this.state.refPerList)

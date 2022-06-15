@@ -6,16 +6,23 @@ import Popup from './Popup';
 import TextBox from './TextBox';
 import { sleep } from '../helper/helper'
 
-type Props = { listID: number, ref: React.RefObject<List>, listName: string, isExpenses: boolean, onTotal: Function, save: Function, update: Function }
+type Props = { listID: number, ref: React.RefObject<List>, listName: string, isExpenses: boolean, save: Function, updateChart: Function }
 
-type State = { listID: number, list: BudgetList, total: number, nextID: number }
+type State = { listID: number, list: BudgetList, nextID: number }
 
 export default class List extends Component<Props, State> {
     state: State = {
         listID: this.props.listID,
         list: new BudgetList(this.props.listName, this.props.isExpenses),
-        total: 0,
         nextID: 0
+    }
+
+    getTotal(): number {
+        return this.state.list.getTotal()
+    }
+
+    getName(): string {
+        return this.state.list.getName()
     }
 
     newItemPopUp(): void {
@@ -36,10 +43,9 @@ export default class List extends Component<Props, State> {
             this.setState({
                 listID: this.state.listID,
                 list: this.state.list,
-                total: this.state.list.getTotal(),
                 nextID: this.state.nextID + 1
             })
-            this.props.onTotal(this.state.listID, this.state.list.getTotal())
+            // this.props.onTotal(this.state.listID, this.state.list.getTotal())
             return true;
         } else {
             return false;
@@ -51,10 +57,9 @@ export default class List extends Component<Props, State> {
             this.setState({
                 listID: this.state.listID,
                 list: this.state.list,
-                total: this.state.list.getTotal(),
                 nextID: this.state.nextID
             })
-            this.props.onTotal(this.state.listID, this.state.list.getTotal())
+            // this.props.onTotal(this.state.listID, this.state.list.getTotal())
         }
     }
 
@@ -62,7 +67,7 @@ export default class List extends Component<Props, State> {
         this.removeItem(+e.currentTarget.id)
         await sleep(250)
         this.props.save()
-        this.props.update()
+        this.props.updateChart()
     }
 
     render() {
@@ -74,7 +79,7 @@ export default class List extends Component<Props, State> {
                         this.generateNewItem(this.state.nextID * 200, `Sample note with id: ${this.state.nextID}`, this.state.nextID)
                         await sleep(250)
                         this.props.save()
-                        this.props.update()
+                        this.props.updateChart()
                     }} />
                     <Button name={'delete'} onClick={() => {
                         this.removeItem(parseInt((document.querySelector(`#id_delete_${this.state.listID}`) as HTMLInputElement).value))
@@ -102,7 +107,7 @@ export default class List extends Component<Props, State> {
                 <Button name={'test state'} onClick={() => {
                     console.log(this.state)
                 }}/>
-                <div>Total for {this.props.listName}: {this.state.total}</div>
+                <div>Total for {this.getName()}: {this.getTotal()}</div>
             </div>
         )
     }

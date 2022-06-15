@@ -1,5 +1,5 @@
 .ListContainer {
-    width: 50vw;
+    width: 74vw;
     height: 100%;
     color: #DDDDDD
     /* padding-top: 1%;
@@ -30,8 +30,16 @@
     color: white;
 }
 
+.ListTable {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .BudgetList {
     padding: 2%;
+    width: 45%;
 }
 
 .BudgetListContainer {
@@ -53,6 +61,7 @@
     background-color: #F05454;
     color: #222831;
     border-bottom: solid;
+    border-color: #DDDDDD;
 }
 
 .BudgetListCol {
