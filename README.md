@@ -6,7 +6,7 @@ The start of my personal web app that can be used for budgeting.
 
 - [x] Folder for logs
 - [x] Saving and loading
-- [ ] Chart the items
+- [x] Chart the items
 - [ ] Path and file checking
 - [ ] Styling
 
