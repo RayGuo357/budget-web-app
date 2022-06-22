@@ -61,7 +61,7 @@ class ChartContainer extends Component<Props, State> {
                 <div className='LegendContainer'>
                     <div className='Legend AvailableLegend'>
                         <div>{this.state.data.labels[0]}:</div>
-                        <div>${this.state.data.datasets[0].data[0]}</div>
+                        <div>${this.state.data.datasets[0].data[0] ? this.state.data.datasets[0].data[0].toFixed(2) : this.state.data.datasets[0].data[0]}</div>
                     </div>
                     <div className='Legend IncomeLegend'>
                         Income
@@ -70,7 +70,7 @@ class ChartContainer extends Component<Props, State> {
                         Array.from(this.state.incomeLabels).map(([key, val]) => {
                             return (<div key={key} className='Legend'>
                                 <div>{key}:</div>
-                                <div>${val}</div>
+                                <div>${val.toFixed(2)}</div>
                             </div>)
                         })
                     }
@@ -81,7 +81,7 @@ class ChartContainer extends Component<Props, State> {
                         Array.from(this.state.expensesLabels).map(([key, val]) => {
                             return (<div key={key} className='Legend'>
                                 <div>{key}:</div>
-                                <div>${val}</div>
+                                <div>${val.toFixed(2)}</div>
                             </div>)
                         })
                     }

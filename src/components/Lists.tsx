@@ -140,14 +140,11 @@ export default class List extends Component<Props, State> {
                             return <div key={comp.id} className="BudgetListCol" id={comp.id.toString()} onClick={this.handleClick}>
                                 {/* <div className='ID'>{comp.id}</div> */}
                                 <div className='Note'>{comp.note}</div>
-                                <div className='Money'>{comp.money}</div>
+                                <div className='Money'>{comp.money.toFixed(2)}</div>
                             </div>
                         })
                     }
                 </ul>
-                <Button name='test' onClick={() => {
-                    console.log(this.state)
-                }}/>
             </div>
         )
     }
