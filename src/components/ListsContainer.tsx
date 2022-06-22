@@ -5,7 +5,7 @@ import List from './Lists';
 import Button from './Button';
 import TextBox from './TextBox';
 import Checkbox from './Checkbox';
-import { getTodaysDate, API, sleep, generatePayload, sumArray } from '../helper/helper';
+import { getTodaysDate, API, sleep, generatePayload } from '../helper/helper';
 import { BudgetList } from '../helper/BudgetList';
 import ChartContainer from './ChartContainer';
 import Popup from './Popup';

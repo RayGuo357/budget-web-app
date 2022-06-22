@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import '../css/ChartContainer.css'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartDataset, ChartData } from 'chart.js'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartData } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
 import { DataType } from '../helper/helper'
 
