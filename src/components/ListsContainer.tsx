@@ -198,6 +198,7 @@ export default class ListsContainer extends Component<Props, State> {
                         let name = (document.querySelector("#list_name") as HTMLInputElement).value
                         let isExpenses = (document.querySelector('#is_expenses') as HTMLInputElement).checked
                         this.generateNewList(name, isExpenses)
+                        this.togglePopUp()
                     }} />
                 </Popup>
                 <div className='ListTable'>

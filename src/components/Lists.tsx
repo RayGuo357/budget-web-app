@@ -26,7 +26,7 @@ export default class List extends Component<Props, State> {
         return this.state.list.getName()
     }
 
-    newItemPopUp(): void {
+    toggleNewPopUp(): void {
         let el = (document.querySelector(`#add_popup_${this.state.listID}`) as HTMLElement)
         if (el.style.display === 'block') {
             el.style.display = 'none'
@@ -75,14 +75,18 @@ export default class List extends Component<Props, State> {
     }
 
     handleClick = async (e: any): Promise<void> => {
-        this.toggleEditPopup(+e.currentTarget.id, this.state.list.getItem(+e.currentTarget.id)!.money, this.state.list.getItem(+e.currentTarget.id)!.note)
-    }
+        let id = +e.currentTarget.id,
+            money = this.state.list.getItem(+e.currentTarget.id)!.money,
+            note = this.state.list.getItem(+e.currentTarget.id)!.note;
 
-    toggleEditPopup = (id: number, money: number, note: string) => {
         (document.querySelector(`#edit_id_${this.state.listID}`) as HTMLDivElement).innerHTML = `ID: ${id}`;
         (document.querySelector(`#edit_money_${this.state.listID}`) as HTMLInputElement).value = money.toString();
         (document.querySelector(`#edit_note_${this.state.listID}`) as HTMLInputElement).value = note.toString();
 
+        this.toggleEditPopup()
+    }
+
+    toggleEditPopup = () => {
         let el = (document.querySelector(`#edit_popup_${this.state.listID}`) as HTMLElement)
         if (el.style.display === 'block') {
             el.style.display = 'none'
@@ -99,8 +103,15 @@ export default class List extends Component<Props, State> {
                     <Button icon={faFloppyDisk} name={'save'} onClick={async () => {
                         let id = parseInt((document.querySelector(`#edit_id_${this.state.listID}`) as HTMLDivElement).innerHTML.split(' ')[1])
                         let money = parseFloat((document.querySelector(`#edit_money_${this.state.listID}`) as HTMLInputElement).value)
+                        if (isNaN(money)) {
+                            money = 0
+                        }
                         let note = (document.querySelector(`#edit_note_${this.state.listID}`) as HTMLInputElement).value
+                        if (note === '') {
+                            note = '[Note was left empty]'
+                        }
                         this.editItem(id, money, note)
+                        this.toggleEditPopup()
                         await sleep(250)
                         this.props.save()
                         this.props.updateChart()
@@ -108,6 +119,7 @@ export default class List extends Component<Props, State> {
                     <Button icon={faTrashCan} name={'delete'} onClick={async () => {
                         let id = parseInt((document.querySelector(`#edit_id_${this.state.listID}`) as HTMLDivElement).innerHTML.split(' ')[1])
                         this.removeItem(id)
+                        this.toggleEditPopup()
                         await sleep(250)
                         this.props.save()
                         this.props.updateChart()
@@ -120,8 +132,15 @@ export default class List extends Component<Props, State> {
                     Popup for: {this.props.listName}
                     <Button icon={faPlusCircle} name={'new item'} onClick={async () => {
                         let money = parseFloat((document.querySelector(`#add_money_${this.state.listID}`) as HTMLInputElement).value)
+                        if (isNaN(money)) {
+                            money = 0
+                        }
                         let note = (document.querySelector(`#add_note_${this.state.listID}`) as HTMLInputElement).value
+                        if (note === '') {
+                            note = '[Note was left empty]'
+                        }
                         this.generateNewItem(money, note, this.state.nextID)
+                        this.toggleNewPopUp()
                         await sleep(250)
                         this.props.save()
                         this.props.updateChart()
@@ -130,7 +149,7 @@ export default class List extends Component<Props, State> {
                     <TextBox id={`add_note_${this.state.listID}`} placeholder='Enter note:' />
                 </Popup>
                 <ul className='BudgetListContainer'>
-                    <div className="BudgetListTitle" onClick={() => this.newItemPopUp()}>{this.state.list.getName()}</div>
+                    <div className="BudgetListTitle" onClick={() => this.toggleNewPopUp()}>{this.state.list.getName()}</div>
                     <div className="BudgetListCol">
                         {/* <div className='ID'>ID</div> */}
                         <div className='Note'>Note</div>
