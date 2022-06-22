@@ -82,6 +82,14 @@
     width: 67%
 }
 
+.fa-trash-can {
+    color: #F05454
+}
+
+.fa-floppy-disk {
+    color: #DDDDDD
+}
+
 #is_expenses {
     color: #DDDDDD;
 }

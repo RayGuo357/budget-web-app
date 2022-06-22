@@ -5,6 +5,7 @@ import Button from './Button'
 import Popup from './Popup';
 import TextBox from './TextBox';
 import { sleep } from '../helper/helper'
+import { faTrashCan, faPlusCircle, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
 type Props = { listID: number, ref: React.RefObject<List>, listName: string, isExpenses: boolean, save: Function, updateChart: Function }
 
@@ -95,7 +96,7 @@ export default class List extends Component<Props, State> {
             <div className="BudgetList">
                 <Popup id={`edit_popup_${this.state.listID}`} style={{ display: 'none' }}>
                     Editing:
-                    <Button name={'save'} onClick={async () => {
+                    <Button icon={faFloppyDisk} name={'save'} onClick={async () => {
                         let id = parseInt((document.querySelector(`#edit_id_${this.state.listID}`) as HTMLDivElement).innerHTML.split(' ')[1])
                         let money = parseFloat((document.querySelector(`#edit_money_${this.state.listID}`) as HTMLInputElement).value)
                         let note = (document.querySelector(`#edit_note_${this.state.listID}`) as HTMLInputElement).value
@@ -104,7 +105,7 @@ export default class List extends Component<Props, State> {
                         this.props.save()
                         this.props.updateChart()
                     }} />
-                    <Button name={'delete'} onClick={async () => {
+                    <Button icon={faTrashCan} name={'delete'} onClick={async () => {
                         let id = parseInt((document.querySelector(`#edit_id_${this.state.listID}`) as HTMLDivElement).innerHTML.split(' ')[1])
                         this.removeItem(id)
                         await sleep(250)
@@ -117,7 +118,7 @@ export default class List extends Component<Props, State> {
                 </Popup>
                 <Popup id={`add_popup_${this.state.listID}`} style={{ display: 'none' }}>
                     Popup for: {this.props.listName}
-                    <Button name={'new item'} onClick={async () => {
+                    <Button icon={faPlusCircle} name={'new item'} onClick={async () => {
                         let money = parseFloat((document.querySelector(`#add_money_${this.state.listID}`) as HTMLInputElement).value)
                         let note = (document.querySelector(`#add_note_${this.state.listID}`) as HTMLInputElement).value
                         this.generateNewItem(money, note, this.state.nextID)

@@ -3,10 +3,22 @@
     border-radius: 2px;
 }
 
-.ListContainer .editButton {
-    display: none;
+.ListContainer:hover .fa-pen-to-square {
+    display: inline;
+    opacity: 1;
 }
 
-.ListContainer:hover .editButton {
-    display: inline;
+.fa-pen-to-square {
+    height: 3em;
+    color: #DDDDDD;
+    opacity: 0.5;
+}
+
+.fa-x {
+    color: #F05454;
+}
+
+.fa-circle-plus {
+    color: #DDDDDD;
+    height: 2em;
 }

@@ -9,6 +9,7 @@ import { getTodaysDate, API, sleep, generatePayload, sumArray } from '../helper/
 import { BudgetList } from '../helper/BudgetList';
 import ChartContainer from './ChartContainer';
 import Popup from './Popup';
+import { faPenToSquare, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 type Props = { refToChart: React.RefObject<ChartContainer> }
 
@@ -40,7 +41,7 @@ export default class ListsContainer extends Component<Props, State> {
         let income = 0
 
         this.state.refPerList.forEach((e) => {
-            
+
             if (e.current!.state.list.getIsExpenses()) {
                 labels.push(e.current!.state.list.getName())
                 data.push(e.current!.getTotal())
@@ -193,7 +194,7 @@ export default class ListsContainer extends Component<Props, State> {
                 <Popup id='LCPopup' style={{ display: 'none' }}>
                     <TextBox id='list_name' placeholder='Enter new list name:' />
                     <Checkbox id='is_expenses' msg='Is an Expense?' />
-                    <Button name={'new list'} onClick={() => {
+                    <Button icon={faPlusCircle} name={'new list'} onClick={() => {
                         let name = (document.querySelector("#list_name") as HTMLInputElement).value
                         let isExpenses = (document.querySelector('#is_expenses') as HTMLInputElement).checked
                         this.generateNewList(name, isExpenses)
@@ -207,7 +208,7 @@ export default class ListsContainer extends Component<Props, State> {
                     }
                 </div>
                 <div className='editButton'>
-                    <Button name='X' onClick={() => {
+                    <Button className="test" icon={faPenToSquare} name='X' onClick={() => {
                         this.togglePopUp()
                     }} />
                 </div>
