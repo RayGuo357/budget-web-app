@@ -63,7 +63,7 @@ class ChartContainer extends Component<Props, State> {
                     </div>
                     {
                         Array.from(this.state.labels).map(([key, val]) => {
-                            return (<div className='Legend'>
+                            return (<div key={key} className='Legend'>
                                 <div>{key}:</div>
                                 <div>${val}</div>
                             </div>)

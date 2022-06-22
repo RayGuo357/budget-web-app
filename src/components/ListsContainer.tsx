@@ -8,6 +8,7 @@ import Checkbox from './Checkbox';
 import { getTodaysDate, API, sleep, generatePayload, sumArray } from '../helper/helper';
 import { BudgetList } from '../helper/BudgetList';
 import ChartContainer from './ChartContainer';
+import Popup from './Popup';
 
 type Props = { refToChart: React.RefObject<ChartContainer> }
 
@@ -38,9 +39,10 @@ export default class ListsContainer extends Component<Props, State> {
         let income = 0
 
         this.state.refPerList.forEach((e) => {
-            labels.push(e.current!.state.list.getName())
-            data.push(e.current!.getTotal())
+            
             if (e.current!.state.list.getIsExpenses()) {
+                labels.push(e.current!.state.list.getName())
+                data.push(e.current!.getTotal())
                 expenses += e.current!.getTotal()
             } else {
                 income += e.current!.getTotal()
@@ -174,9 +176,27 @@ export default class ListsContainer extends Component<Props, State> {
             });
     }
 
+    togglePopUp = (): void => {
+        let el = (document.querySelector('#LCPopup') as HTMLElement)
+        if (el.style.display === 'block') {
+            el.style.display = 'none'
+        } else {
+            el.style.display = 'block'
+        }
+    }
+
     render() {
         return (
             <div className="ListContainer">
+                <Popup id='LCPopup' style={{ display: 'none' }}>
+                    <TextBox id='list_name' placeholder='Enter new list name:' />
+                    <Checkbox id='is_expenses' msg='Is an Expense?' />
+                    <Button name={'new list'} onClick={() => {
+                        let name = (document.querySelector("#list_name") as HTMLInputElement).value
+                        let isExpenses = (document.querySelector('#is_expenses') as HTMLInputElement).checked
+                        this.generateNewList(name, isExpenses)
+                    }} />
+                </Popup>
                 <div className='ListTable'>
                     {
                         this.state.list.map((comp) => {
@@ -184,29 +204,11 @@ export default class ListsContainer extends Component<Props, State> {
                         })
                     }
                 </div>
-                <TextBox id='list_name' placeholder='Enter new list name:' />
-                <Checkbox id='is_expenses' msg='Is an Expense?' />
-                <Button name={'new list'} onClick={() => {
-                    let name = (document.querySelector("#list_name") as HTMLInputElement).value
-                    let isExpenses = (document.querySelector('#is_expenses') as HTMLInputElement).checked
-                    this.generateNewList(name, isExpenses)
-                    // this.saveAsJSON()
-                }} />
-                <div>Total: {this.state.total}</div>
-                <div>Today is: {getTodaysDate()}</div>
-                <Button name={'save'} onClick={() => {
-                    this.saveAsJSON()
-                }} />
-                <Button name={'test'} onClick={() => {
-                    console.log(this.state.totalPerList)
-                }} />
-                <Button name={'add all'} onClick={() => {
-                    console.log(this.state.refPerList)
-                    this.state.refPerList.forEach((e) => {
-                        console.log(e)
-                        e.current?.generateNewItem(0, 'test', 0)
-                    })
-                }} />
+                <div className='editButton'>
+                    <Button name='X' onClick={() => {
+                        this.togglePopUp()
+                    }} />
+                </div>
             </div>
         )
     }

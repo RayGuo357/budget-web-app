@@ -76,30 +76,29 @@ export default class List extends Component<Props, State> {
                 <Popup id={`popup${this.state.listID}`} style={{ display: 'none' }}>
                     Popup for: {this.props.listName}
                     <Button name={'new item'} onClick={async () => {
-                        this.generateNewItem(this.state.nextID * 200, `Sample note with id: ${this.state.nextID}`, this.state.nextID)
+                        let money = parseFloat((document.querySelector(`#money_${this.state.listID}`) as HTMLInputElement).value)
+                        let note = (document.querySelector(`#note_${this.state.listID}`) as HTMLInputElement).value
+                        this.generateNewItem(money, note, this.state.nextID)
                         await sleep(250)
                         this.props.save()
                         this.props.updateChart()
                     }} />
-                    <Button name={'delete'} onClick={() => {
-                        this.removeItem(parseInt((document.querySelector(`#id_delete_${this.state.listID}`) as HTMLInputElement).value))
-                        this.props.save()
-                    }} />
-                    <TextBox id={`id_delete_${this.state.listID}`} placeholder='Enter item ID to delete:' />
+                    <TextBox id={`money_${this.state.listID}`} placeholder='Enter money:' />
+                    <TextBox id={`note_${this.state.listID}`} placeholder='Enter note:' />
                 </Popup>
                 <ul className='BudgetListContainer'>
                     <div className="BudgetListTitle" onClick={() => this.newItemPopUp()}>{this.state.list.getName()}</div>
                     <div className="BudgetListCol">
-                        <div className='ID'>ID</div>
-                        <div className='Money'>Money</div>
+                        {/* <div className='ID'>ID</div> */}
                         <div className='Note'>Note</div>
+                        <div className='Money'>Money</div>
                     </div>
                     {
                         this.state.list.getItems().map((comp) => {
                             return <div key={comp.id} className="BudgetListCol" id={comp.id.toString()} onClick={this.handleClick}>
-                                <div className='ID'>{comp.id}</div>
-                                <div className='Money'>{comp.money}</div>
+                                {/* <div className='ID'>{comp.id}</div> */}
                                 <div className='Note'>{comp.note}</div>
+                                <div className='Money'>{comp.money}</div>
                             </div>
                         })
                     }

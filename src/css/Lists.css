@@ -74,16 +74,12 @@
     color: #DDDDDD;
 }
 
-.ID {
-    width: 33%
-}
-
 .Money {
     width: 33%
 }
 
 .Note {
-    width: 34%
+    width: 67%
 }
 
 #is_expenses {

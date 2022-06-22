@@ -2,3 +2,11 @@
     background-color: #222831;
     border-radius: 2px;
 }
+
+.ListContainer .editButton {
+    display: none;
+}
+
+.ListContainer:hover .editButton {
+    display: inline;
+}
