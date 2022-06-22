@@ -34,7 +34,8 @@ export default class ListsContainer extends Component<Props, State> {
     updateChart = (): void => {
         let labels: string[] = ['Available']
         let data: number[] = [0]
-        let newMap: Map<string, number> = new Map<string, number>()
+        let incomeMap: Map<string, number> = new Map<string, number>()
+        let expensesMap: Map<string, number> = new Map<string, number>()
         let expenses = 0
         let income = 0
 
@@ -44,13 +45,14 @@ export default class ListsContainer extends Component<Props, State> {
                 labels.push(e.current!.state.list.getName())
                 data.push(e.current!.getTotal())
                 expenses += e.current!.getTotal()
+                expensesMap.set(e.current!.getName(), e.current!.getTotal())
             } else {
                 income += e.current!.getTotal()
+                incomeMap.set(e.current!.getName(), e.current!.getTotal())
             }
-            newMap.set(e.current!.getName(), e.current!.getTotal())
         })
         data[0] = income - expenses
-        this.props.refToChart.current?.updateChart(generatePayload(labels, data), newMap)
+        this.props.refToChart.current?.updateChart(generatePayload(labels, data), incomeMap, expensesMap)
     }
 
     generateNewList(name: string, isExpenses: boolean): void {

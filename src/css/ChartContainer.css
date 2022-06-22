@@ -28,3 +28,14 @@
     border-bottom: 4px solid #DDDDDD;
     border-top: 4px solid #DDDDDD;
 }
+
+.IncomeLegend {
+    font-weight: bold;
+    border-bottom: 2px solid #DDDDDD;
+}
+
+.ExpenseLegend {
+    font-weight: bold;
+    border-bottom: 2px solid #DDDDDD;
+    border-top: 2px solid #DDDDDD;
+}

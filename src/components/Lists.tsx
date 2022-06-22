@@ -103,9 +103,6 @@ export default class List extends Component<Props, State> {
                         })
                     }
                 </ul>
-                <Button name={'test state'} onClick={() => {
-                    console.log(this.state)
-                }}/>
             </div>
         )
     }

@@ -6,7 +6,7 @@ import { DataType } from '../helper/helper'
 
 type Props = { ref: React.RefObject<any> }
 
-type State = { data: DataType, labels: Map<string, number> }
+type State = { data: DataType, incomeLabels: Map<string, number>, expensesLabels: Map<string, number> }
 // https://react-chartjs-2.js.org/components/
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -42,13 +42,15 @@ class ChartContainer extends Component<Props, State> {
                 },
             ],
         },
-        labels: new Map<string, number>()
+        incomeLabels: new Map<string, number>(),
+        expensesLabels: new Map<string, number>()
     }
 
-    updateChart(newData: DataType, newMap: Map<string, number>): void {
+    updateChart(newData: DataType, incomeMap: Map<string, number>, expensesMap: Map<string, number>): void {
         this.setState({
             data: newData,
-            labels: newMap
+            incomeLabels: incomeMap,
+            expensesLabels: expensesMap
         })
     }
 
@@ -61,8 +63,22 @@ class ChartContainer extends Component<Props, State> {
                         <div>{this.state.data.labels[0]}:</div>
                         <div>${this.state.data.datasets[0].data[0]}</div>
                     </div>
+                    <div className='Legend IncomeLegend'>
+                        Income
+                    </div>
                     {
-                        Array.from(this.state.labels).map(([key, val]) => {
+                        Array.from(this.state.incomeLabels).map(([key, val]) => {
+                            return (<div key={key} className='Legend'>
+                                <div>{key}:</div>
+                                <div>${val}</div>
+                            </div>)
+                        })
+                    }
+                    <div className='Legend ExpenseLegend'>
+                        Expenses
+                    </div>
+                    {
+                        Array.from(this.state.expensesLabels).map(([key, val]) => {
                             return (<div key={key} className='Legend'>
                                 <div>{key}:</div>
                                 <div>${val}</div>
