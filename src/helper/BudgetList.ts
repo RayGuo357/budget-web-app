@@ -26,7 +26,7 @@ export class BudgetList implements IBudgetList {
         this.isExpenses = isExpenses;
         this.items = items;
         this.total = total;
-    }
+    };
 
     getName(): string {
         return this.name;
@@ -38,10 +38,10 @@ export class BudgetList implements IBudgetList {
 
     getItem(id: number): Items | null {
         for (let e of this.items) {
-            if (e.id === id) return e
+            if (e.id === id) return e;
         }
-        return null
-    }
+        return null;
+    };
 
     getItems(): Items[] {
         return this.items;
@@ -49,11 +49,11 @@ export class BudgetList implements IBudgetList {
 
     getNumItems(): number {
         return this.items.length;
-    }
+    };
 
     getTotal(): number {
         return this.total;
-    }
+    };
 
     setName(name: string): void {
         this.name = name;
@@ -61,12 +61,12 @@ export class BudgetList implements IBudgetList {
 
     setTotal(money: number): void {
         this.total += money;
-    }
+    };
 
     addItem(item: Items): boolean {
         let current: number = this.items.length;
         this.items.push(item);
-        this.setTotal(item.money)
+        this.setTotal(item.money);
         return this.items.length > current;
     };
 
@@ -75,12 +75,24 @@ export class BudgetList implements IBudgetList {
         let newItems: Items[] = [];
         this.items.forEach((e) => {
             if (e.id !== id) {
-                newItems.push(e)
+                newItems.push(e);
             } else {
-                this.setTotal(-e.money)
+                this.setTotal(-e.money);
             }
         });
         this.items = newItems;
         return this.items.length < current;
     };
+
+    editItem(item: Items): boolean {
+        for (let i = 0; i < this.items.length; i++) {
+            if (item.id === this.items[i].id) {
+                this.setTotal(-this.items[i].money)
+                this.items[i] = item;
+                this.setTotal(this.items[i].money)
+                return true;
+            }
+        }
+        return false;
+    }
 }
