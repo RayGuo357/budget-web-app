@@ -128,11 +128,13 @@ export default class List extends Component<Props, State> {
                         this.props.updateChart()
                     }} />
                     <Button icon={faTrashCan} name={'delete'} onClick={async () => {
-                        this.props.onDelete(this)
-                        this.toggleListEditPopup()
-                        await sleep(250)
-                        this.props.save()
-                        this.props.updateChart()
+                        if (window.confirm("Are you sure you want to delete the list and its contents?")) {
+                            this.props.onDelete(this)
+                            this.toggleListEditPopup()
+                            await sleep(250)
+                            this.props.save()
+                            this.props.updateChart()
+                        }
                     }} />
                     <TextBox id={`list_edit_name_${this.state.listID}`} placeholder='Name of the list:' />
                 </Popup>
@@ -157,11 +159,13 @@ export default class List extends Component<Props, State> {
                     }} />
                     <Button icon={faTrashCan} name={'delete'} onClick={async () => {
                         let id = parseInt((document.querySelector(`#edit_id_${this.state.listID}`) as HTMLDivElement).innerHTML.split(' ')[1])
-                        this.removeItem(id)
-                        this.toggleEditPopup()
-                        await sleep(250)
-                        this.props.save()
-                        this.props.updateChart()
+                        if (window.confirm("Are you sure you want to delete this item?")) {
+                            this.removeItem(id)
+                            this.toggleEditPopup()
+                            await sleep(250)
+                            this.props.save()
+                            this.props.updateChart()
+                        }
                     }} />
                     <div id={`edit_id_${this.state.listID}`}>ID: </div>
                     <TextBox id={`edit_money_${this.state.listID}`} placeholder='Enter money:' />
