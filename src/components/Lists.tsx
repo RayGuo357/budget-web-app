@@ -8,7 +8,7 @@ import { sleep } from '../helper/helper'
 import { faTrashCan, faPlusCircle, faFloppyDisk, faPenToSquare, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-type Props = { listID: number, ref: React.RefObject<List>, listName: string, isExpenses: boolean, save: Function, updateChart: Function }
+type Props = { listID: number, ref: React.RefObject<List>, listName: string, isExpenses: boolean, save: Function, updateChart: Function, onDelete: Function }
 
 type State = { listID: number, list: BudgetList, nextID: number }
 
@@ -128,8 +128,7 @@ export default class List extends Component<Props, State> {
                         this.props.updateChart()
                     }} />
                     <Button icon={faTrashCan} name={'delete'} onClick={async () => {
-                        let id = parseInt((document.querySelector(`#edit_id_${this.state.listID}`) as HTMLDivElement).innerHTML.split(' ')[1])
-                        // remove list
+                        this.props.onDelete(this)
                         this.toggleListEditPopup()
                         await sleep(250)
                         this.props.save()
@@ -192,16 +191,17 @@ export default class List extends Component<Props, State> {
 
                 <ul className='BudgetListContainer'>
                     <div className="BudgetListTitle">
-                        <Button icon={faPenToSquare} name={'edit item'} onClick={() => { 
-                            (document.querySelector(`#list_edit_name_${this.state.listID}`) as HTMLInputElement).value = this.getName();
-                            this.toggleListEditPopup() 
-                        }}/>
+                        <div style={{ width: '10%' }}></div>
                         <div id='mid'>{this.state.list.getName()}</div>
-                        <Button icon={faPlusCircle} name={'new item'} onClick={() => { this.toggleNewPopup() }}/>
+                        <Button icon={faPenToSquare} name={'edit item'} onClick={() => {
+                            (document.querySelector(`#list_edit_name_${this.state.listID}`) as HTMLInputElement).value = this.getName();
+                            this.toggleListEditPopup()
+                        }} />
+                        <Button icon={faPlusCircle} name={'new item'} onClick={() => { this.toggleNewPopup() }} />
                     </div>
                     <div className="BudgetListCol">
                         {/* <div className='ID'>ID</div> */}
-                        <div style={{width: '5%'}}></div>
+                        <div style={{ width: '5%' }}></div>
                         <div className='Note'>Note</div>
                         <div className='Money'>Money</div>
                     </div>

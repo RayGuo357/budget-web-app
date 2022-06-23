@@ -56,7 +56,7 @@ export default class ListsContainer extends Component<Props, State> {
         this.props.refToChart.current?.updateChart(generatePayload(labels, data), incomeMap, expensesMap)
     }
 
-    generateNewList(name: string, isExpenses: boolean): void {
+    generateNewListForLoading(name: string, isExpenses: boolean): void {
         // Initialize copy of current list
         let newList: React.ReactElement[] = this.state.list;
 
@@ -81,7 +81,8 @@ export default class ListsContainer extends Component<Props, State> {
             listName={name}
             isExpenses={isExpenses}
             save={this.saveAsJSON}
-            updateChart={this.updateChart} />);
+            updateChart={this.updateChart} 
+            onDelete={this.onDelete} />);
 
         // Initializes total for the new list
         let newTotalList: Map<string, number> = this.state.totalPerList
@@ -94,6 +95,52 @@ export default class ListsContainer extends Component<Props, State> {
             refPerList: this.state.refPerList,
             total: this.state.total,
             next_id: newList.length
+        });
+
+        // Clears input
+        (document.querySelector("#list_name") as HTMLInputElement).value = "";
+        return;
+    }
+
+    generateNewList(name: string, isExpenses: boolean): void {
+        // Initialize copy of current list
+        let newList: React.ReactElement[] = this.state.list;
+
+        // Initialize copy of ref and create reference to child List
+        let refPerList: Map<string, React.RefObject<List>> = this.state.refPerList
+        let ref: React.RefObject<List> = React.createRef() as React.RefObject<List>
+        refPerList.set(this.state.next_id.toString(), ref)
+
+        // Updates state with the new reference
+        this.setState({
+            list: this.state.list,
+            totalPerList: this.state.totalPerList,
+            refPerList: refPerList,
+            total: this.state.total,
+            next_id: this.state.next_id
+        })
+
+        // Add the new list to the copy
+        newList.push(<List key={this.state.next_id}
+            ref={ref}
+            listID={this.state.next_id}
+            listName={name}
+            isExpenses={isExpenses}
+            save={this.saveAsJSON}
+            updateChart={this.updateChart} 
+            onDelete={this.onDelete} />);
+
+        // Initializes total for the new list
+        let newTotalList: Map<string, number> = this.state.totalPerList
+        newTotalList.set(this.state.next_id.toString(), 0)
+
+        // Finalize updated state and increments next id
+        this.setState({
+            list: newList,
+            totalPerList: newTotalList,
+            refPerList: this.state.refPerList,
+            total: this.state.total,
+            next_id: this.state.next_id + 1
         });
 
         // Clears input
@@ -132,7 +179,7 @@ export default class ListsContainer extends Component<Props, State> {
             .then(res => res.json())
             .then(res => {
                 res.listContainer.forEach(async (e: any) => {
-                    this.generateNewList(e.list.name, e.list.isExpenses)
+                    this.generateNewListForLoading(e.list.name, e.list.isExpenses)
                     await sleep(500)
                     let newList = new BudgetList(e.list.name, e.list.isExpenses)
                     e.list.items.forEach((i: { id: number, money: number, note: string }) => {
@@ -186,6 +233,26 @@ export default class ListsContainer extends Component<Props, State> {
         } else {
             el.style.display = 'block'
         }
+    }
+
+    onDelete = (item: React.ReactElement): void => {
+        let newList: React.ReactElement[] = []
+
+        this.state.list.forEach((e, ind) => {
+            if (e.props.listID !== item.props.listID) {
+                newList.push(e)
+            } else {
+                this.state.refPerList.delete(ind.toString())
+            }
+        })
+
+        this.setState({
+            list: newList,
+            totalPerList: this.state.totalPerList,
+            refPerList: this.state.refPerList,
+            total: this.state.total,
+            next_id: this.state.next_id
+        })
     }
 
     render() {
