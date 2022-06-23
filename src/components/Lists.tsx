@@ -27,15 +27,6 @@ export default class List extends Component<Props, State> {
         return this.state.list.getName()
     }
 
-    toggleNewPopUp(): void {
-        let el = (document.querySelector(`#add_popup_${this.state.listID}`) as HTMLElement)
-        if (el.style.display === 'block') {
-            el.style.display = 'none'
-        } else {
-            el.style.display = 'block'
-        }
-    }
-
     generateNewItem(money: number, note: string, id: number = this.state.list.getItems().length): boolean {
         if (this.state.list.addItem({
             id: id,
@@ -75,6 +66,15 @@ export default class List extends Component<Props, State> {
         }
     }
 
+    editName(name: string): void {
+        this.state.list.setName(name)
+        this.setState({
+            listID: this.state.listID,
+            list: this.state.list,
+            nextID: this.state.nextID
+        })
+    }
+
     handleClick = async (e: any): Promise<void> => {
         let id = +e.currentTarget.id,
             money = this.state.list.getItem(+e.currentTarget.id)!.money,
@@ -87,8 +87,26 @@ export default class List extends Component<Props, State> {
         this.toggleEditPopup()
     }
 
+    toggleNewPopup(): void {
+        let el = (document.querySelector(`#add_popup_${this.state.listID}`) as HTMLElement)
+        if (el.style.display === 'block') {
+            el.style.display = 'none'
+        } else {
+            el.style.display = 'block'
+        }
+    }
+
     toggleEditPopup = () => {
         let el = (document.querySelector(`#edit_popup_${this.state.listID}`) as HTMLElement)
+        if (el.style.display === 'block') {
+            el.style.display = 'none'
+        } else {
+            el.style.display = 'block'
+        }
+    }
+
+    toggleListEditPopup(): void {
+        let el = (document.querySelector(`#list_edit_popup_${this.state.listID}`) as HTMLElement)
         if (el.style.display === 'block') {
             el.style.display = 'none'
         } else {
@@ -99,6 +117,27 @@ export default class List extends Component<Props, State> {
     render() {
         return (
             <div className="BudgetList">
+                <Popup id={`list_edit_popup_${this.state.listID}`} style={{ display: 'none' }}>
+                    List Editing:
+                    <Button icon={faFloppyDisk} name={'save'} onClick={async () => {
+                        let name = (document.querySelector(`#list_edit_name_${this.state.listID}`) as HTMLInputElement).value
+                        this.editName(name)
+                        this.toggleListEditPopup()
+                        await sleep(250)
+                        this.props.save()
+                        this.props.updateChart()
+                    }} />
+                    <Button icon={faTrashCan} name={'delete'} onClick={async () => {
+                        let id = parseInt((document.querySelector(`#edit_id_${this.state.listID}`) as HTMLDivElement).innerHTML.split(' ')[1])
+                        // remove list
+                        this.toggleListEditPopup()
+                        await sleep(250)
+                        this.props.save()
+                        this.props.updateChart()
+                    }} />
+                    <TextBox id={`list_edit_name_${this.state.listID}`} placeholder='Name of the list:' />
+                </Popup>
+
                 <Popup id={`edit_popup_${this.state.listID}`} style={{ display: 'none' }}>
                     Editing:
                     <Button icon={faFloppyDisk} name={'save'} onClick={async () => {
@@ -129,6 +168,7 @@ export default class List extends Component<Props, State> {
                     <TextBox id={`edit_money_${this.state.listID}`} placeholder='Enter money:' />
                     <TextBox id={`edit_note_${this.state.listID}`} placeholder='Enter note:' />
                 </Popup>
+
                 <Popup id={`add_popup_${this.state.listID}`} style={{ display: 'none' }}>
                     Popup for: {this.props.listName}
                     <Button icon={faPlusCircle} name={'new item'} onClick={async () => {
@@ -141,7 +181,7 @@ export default class List extends Component<Props, State> {
                             note = '[Note was left empty]'
                         }
                         this.generateNewItem(money, note, this.state.nextID)
-                        this.toggleNewPopUp()
+                        this.toggleNewPopup()
                         await sleep(250)
                         this.props.save()
                         this.props.updateChart()
@@ -149,11 +189,15 @@ export default class List extends Component<Props, State> {
                     <TextBox id={`add_money_${this.state.listID}`} placeholder='Enter money:' />
                     <TextBox id={`add_note_${this.state.listID}`} placeholder='Enter note:' />
                 </Popup>
+
                 <ul className='BudgetListContainer'>
-                    <div className="BudgetListTitle" onClick={() => this.toggleNewPopUp()}>
-                        <Button icon={faPenToSquare} name={'new item'} onClick={() => {}}/>
+                    <div className="BudgetListTitle">
+                        <Button icon={faPenToSquare} name={'edit item'} onClick={() => { 
+                            (document.querySelector(`#list_edit_name_${this.state.listID}`) as HTMLInputElement).value = this.getName();
+                            this.toggleListEditPopup() 
+                        }}/>
                         <div id='mid'>{this.state.list.getName()}</div>
-                        <Button icon={faPlusCircle} name={'new item'} onClick={() => {}}/>
+                        <Button icon={faPlusCircle} name={'new item'} onClick={() => { this.toggleNewPopup() }}/>
                     </div>
                     <div className="BudgetListCol">
                         {/* <div className='ID'>ID</div> */}
