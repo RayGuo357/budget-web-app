@@ -9,6 +9,7 @@
 }
 
 .PopupOuter {
+    z-index: 1;
     position: absolute;
     width: 100vw;
     height: 100vh;
@@ -19,6 +20,7 @@
 }
 
 .PopupInner {
+    z-index: 1;
     display: block;
     position: absolute;
     top: 50%;
@@ -57,6 +59,9 @@
 
 .BudgetListTitle {
     border-bottom: solid;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .BudgetListTitle:hover {
@@ -66,9 +71,67 @@
     border-color: #DDDDDD;
 }
 
+.BudgetListTitle #mid {
+    width: 90%;
+}
+
+.BudgetListTitle .btn {
+    width: 5%;
+    height: 1.8em;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+}
+
+.BudgetListTitle:hover .btn {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.BudgetListTitle .btn:hover {
+    width: 5%;
+    height: 1.8em;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.BudgetListTitle .fa-pen-to-square {
+    height: 100%;
+    color: #DDDDDD;
+    opacity: 0.1;
+}
+
+.BudgetListTitle:hover .fa-pen-to-square {
+    height: 100%;
+    color: #DDDDDD;
+    opacity: 1;
+}
+
+.BudgetListTitle .fa-circle-plus {
+    height: 100%;
+    color: #DDDDDD;
+    opacity: 0.1;
+}
+
+.BudgetListTitle:hover .fa-circle-plus {
+    height: 100%;
+    color: #DDDDDD;
+    opacity: 1;
+}
+
 .BudgetListCol {
     display: flex;
     flex-direction: row;
+}
+
+.BudgetListCol .fa-pencil {
+    color: transparent;
+    height: 1em;
+    width: 5%;
+    padding-top: 2px;
+}
+
+.BudgetListCol:hover .fa-pencil {
+    color: #DDDDDD;
 }
 
 .BudgetListCol:hover {
@@ -77,11 +140,11 @@
 }
 
 .Money {
-    width: 33%
+    width: 25%
 }
 
 .Note {
-    width: 67%
+    width: 70%
 }
 
 .fa-trash-can {

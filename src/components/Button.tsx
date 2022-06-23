@@ -7,7 +7,7 @@ type Props = { className?: string, icon?: IconDefinition, name: string, onClick:
 
 const Button = (props: Props) => {
   return (
-    <button name={props.name} onClick={props.onClick} style={{backgroundColor: 'transparent', borderWidth: 0}}>
+    <button className='btn' name={props.name} onClick={props.onClick} style={{borderWidth: 0}}>
         <FontAwesomeIcon className={props.className} icon={props.icon ? props.icon : faPenToSquare} />
     </button>
   )

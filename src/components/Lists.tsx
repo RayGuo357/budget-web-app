@@ -5,7 +5,8 @@ import Button from './Button'
 import Popup from './Popup';
 import TextBox from './TextBox';
 import { sleep } from '../helper/helper'
-import { faTrashCan, faPlusCircle, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan, faPlusCircle, faFloppyDisk, faPenToSquare, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type Props = { listID: number, ref: React.RefObject<List>, listName: string, isExpenses: boolean, save: Function, updateChart: Function }
 
@@ -149,9 +150,14 @@ export default class List extends Component<Props, State> {
                     <TextBox id={`add_note_${this.state.listID}`} placeholder='Enter note:' />
                 </Popup>
                 <ul className='BudgetListContainer'>
-                    <div className="BudgetListTitle" onClick={() => this.toggleNewPopUp()}>{this.state.list.getName()}</div>
+                    <div className="BudgetListTitle" onClick={() => this.toggleNewPopUp()}>
+                        <Button icon={faPenToSquare} name={'new item'} onClick={() => {}}/>
+                        <div id='mid'>{this.state.list.getName()}</div>
+                        <Button icon={faPlusCircle} name={'new item'} onClick={() => {}}/>
+                    </div>
                     <div className="BudgetListCol">
                         {/* <div className='ID'>ID</div> */}
+                        <div style={{width: '5%'}}></div>
                         <div className='Note'>Note</div>
                         <div className='Money'>Money</div>
                     </div>
@@ -159,6 +165,7 @@ export default class List extends Component<Props, State> {
                         this.state.list.getItems().map((comp) => {
                             return <div key={comp.id} className="BudgetListCol" id={comp.id.toString()} onClick={this.handleClick}>
                                 {/* <div className='ID'>{comp.id}</div> */}
+                                <FontAwesomeIcon icon={faPencil} />
                                 <div className='Note'>{comp.note}</div>
                                 <div className='Money'>${comp.money.toFixed(2)}</div>
                             </div>

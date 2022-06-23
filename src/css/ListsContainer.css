@@ -3,15 +3,36 @@
     border-radius: 2px;
 }
 
-.ListContainer:hover .fa-pen-to-square {
+.btn {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 18%;
+    padding: 0.5%; 
+    -webkit-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.22); 
+    box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.22);
+}
+
+.btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 18%;
+}
+
+.editButton .btn {
+    background-color: rgba(240, 84, 84, 0.5);
+}
+
+.editButton .btn:hover {
+    background-color: rgba(240, 84, 84, 1);
+}
+
+.btn:hover .fa-pen-to-square {
     display: inline;
     opacity: 1;
 }
 
 .fa-pen-to-square {
     height: 3em;
-    color: #DDDDDD;
-    opacity: 0.5;
+    color: #222831;
+    opacity: 1;
 }
 
 .fa-x {
