@@ -1,4 +1,4 @@
-# Budget Web App: The Start
+# Budget Web App
 
 The start of my personal web app that can be used for budgeting.
 
@@ -10,3 +10,26 @@ The start of my personal web app that can be used for budgeting.
 - [ ] Path and file checking
 - [ ] Styling
 
+## Installation and Setup Guide
+
+Requirements: Node.Js, Git (preferred)
+
+Download the repository by cloning or downloading the zip
+
+Once in project directory
+
+Set up the npm package by running in terminal: 
+
+`npm init`
+
+Install dependencies by running:
+
+`npm install`
+
+To start the webpage and server run:
+
+`npm run start`
+
+## Playthrough/Clickthrough
+
+[Pictures here]
