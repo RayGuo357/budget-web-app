@@ -10,6 +10,7 @@ export interface IBudgetList {
 
     setName(name: string): void;
     setTotal(money: number): void;
+    setIsExpenses(isExpenses: boolean): void;
 
     addItem(item: Items): boolean;
     removeItem(id: number): boolean;
@@ -61,6 +62,10 @@ export class BudgetList implements IBudgetList {
 
     setTotal(money: number): void {
         this.total += money;
+    };
+
+    setIsExpenses(isExpenses: boolean): void {
+        this.isExpenses = isExpenses;
     };
 
     addItem(item: Items): boolean {

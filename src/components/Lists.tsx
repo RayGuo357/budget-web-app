@@ -7,6 +7,7 @@ import TextBox from './TextBox';
 import { sleep } from '../helper/helper'
 import { faTrashCan, faPlusCircle, faFloppyDisk, faPenToSquare, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Checkbox from './Checkbox';
 
 type Props = { listID: number, ref: React.RefObject<List>, listName: string, isExpenses: boolean, save: Function, updateChart: Function, onDelete: Function }
 
@@ -38,7 +39,6 @@ export default class List extends Component<Props, State> {
                 list: this.state.list,
                 nextID: this.state.nextID + 1
             })
-            // this.props.onTotal(this.state.listID, this.state.list.getTotal())
             return true;
         } else {
             return false;
@@ -52,7 +52,6 @@ export default class List extends Component<Props, State> {
                 list: this.state.list,
                 nextID: this.state.nextID
             })
-            // this.props.onTotal(this.state.listID, this.state.list.getTotal())
         }
     }
 
@@ -66,7 +65,8 @@ export default class List extends Component<Props, State> {
         }
     }
 
-    editName(name: string): void {
+    editList(name: string, isExpenses: boolean): void {
+        this.state.list.setIsExpenses(isExpenses)
         this.state.list.setName(name)
         this.setState({
             listID: this.state.listID,
@@ -121,7 +121,8 @@ export default class List extends Component<Props, State> {
                     List Editing:
                     <Button icon={faFloppyDisk} name={'save'} onClick={async () => {
                         let name = (document.querySelector(`#list_edit_name_${this.state.listID}`) as HTMLInputElement).value
-                        this.editName(name)
+                        let isExpenses = (document.querySelector(`#list_edit_expenses_${this.state.listID}`) as HTMLInputElement).checked
+                        this.editList(name, isExpenses)
                         this.toggleListEditPopup()
                         await sleep(250)
                         this.props.save()
@@ -137,6 +138,7 @@ export default class List extends Component<Props, State> {
                         }
                     }} />
                     <TextBox id={`list_edit_name_${this.state.listID}`} placeholder='Name of the list:' />
+                    <Checkbox msg={'Is an expense?'} id={`list_edit_expenses_${this.state.listID}`} />
                 </Popup>
 
                 <Popup id={`edit_popup_${this.state.listID}`} style={{ display: 'none' }}>
@@ -152,7 +154,11 @@ export default class List extends Component<Props, State> {
                             note = '[Note was left empty]'
                         }
                         this.editItem(id, money, note)
-                        this.toggleEditPopup()
+                        this.toggleEditPopup();
+
+                        (document.querySelector(`#edit_note_${this.state.listID}`) as HTMLInputElement).value = "";
+                        (document.querySelector(`#edit_money_${this.state.listID}`) as HTMLInputElement).value = "";
+
                         await sleep(250)
                         this.props.save()
                         this.props.updateChart()
@@ -184,7 +190,11 @@ export default class List extends Component<Props, State> {
                             note = '[Note was left empty]'
                         }
                         this.generateNewItem(money, note, this.state.nextID)
-                        this.toggleNewPopup()
+                        this.toggleNewPopup();
+
+                        (document.querySelector(`#add_note_${this.state.listID}`) as HTMLInputElement).value = "";
+                        (document.querySelector(`#add_money_${this.state.listID}`) as HTMLInputElement).value = "";
+
                         await sleep(250)
                         this.props.save()
                         this.props.updateChart()
@@ -204,7 +214,6 @@ export default class List extends Component<Props, State> {
                         <Button icon={faPlusCircle} name={'new item'} onClick={() => { this.toggleNewPopup() }} />
                     </div>
                     <div className="BudgetListCol">
-                        {/* <div className='ID'>ID</div> */}
                         <div style={{ width: '5%' }}></div>
                         <div className='Note'>Note</div>
                         <div className='Money'>Money</div>
@@ -212,7 +221,6 @@ export default class List extends Component<Props, State> {
                     {
                         this.state.list.getItems().map((comp) => {
                             return <div key={comp.id} className="BudgetListCol" id={comp.id.toString()} onClick={this.handleClick}>
-                                {/* <div className='ID'>{comp.id}</div> */}
                                 <FontAwesomeIcon icon={faPencil} />
                                 <div className='Note'>{comp.note}</div>
                                 <div className='Money'>${comp.money.toFixed(2)}</div>

@@ -148,27 +148,6 @@ export default class ListsContainer extends Component<Props, State> {
         return;
     }
 
-    // Used by the child components to total their items
-    // Maybe obsolete
-    // total = (listID: number, money: number): void => {
-    //     let newTotalList: Map<string, number> = this.state.totalPerList
-    //     newTotalList.set(listID.toString(), money)
-
-    //     let newTotal = 0;
-    //     for (let entry of Array.from(newTotalList.entries())) {
-    //         let key: string = entry[0], val: number = entry[1]
-    //         newTotal += val
-    //     }
-
-    //     this.setState({
-    //         list: this.state.list,
-    //         totalPerList: newTotalList,
-    //         refPerList: this.state.refPerList,
-    //         total: newTotal,
-    //         next_id: this.state.list.length
-    //     })
-    // }
-
     getRef(ID: string): React.RefObject<List> | undefined {
         return this.state.refPerList.get(ID)
     }
