@@ -1,18 +1,10 @@
 # Budget Web App
 
-The start of my personal web app that can be used for budgeting.
-
-## TODO
-
-- [x] Folder for logs
-- [x] Saving and loading
-- [x] Chart the items
-- [ ] Path and file checking
-- [ ] Styling
+A self-hosted web application designed for simple, personal accounting and budgeting. This project was designed to provide a monthly log of income and expenses. The web application automatically saves as new entries are added, deleted, or edited and loads the log when the page is entered.
 
 ## Installation and Setup Guide
 
-Requirements: Node.Js, Git (preferred)
+Requirements: Node.js, Git (preferred)
 
 Download the repository by cloning or downloading the zip
 
@@ -26,10 +18,12 @@ Install dependencies by running:
 
 `npm install`
 
-To start the webpage and server run:
+To start the web app run:
 
 `npm run start`
 
-## Playthrough/Clickthrough
+## Pictures
 
-[Pictures here]
+![Default page](./pictures/default.jpg)
+
+![Editing](./pictures/editing.jpg)
